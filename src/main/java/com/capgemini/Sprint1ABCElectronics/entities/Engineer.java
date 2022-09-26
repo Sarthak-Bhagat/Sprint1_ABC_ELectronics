@@ -7,23 +7,23 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_engineer")
 public class Engineer {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@OneToOne
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employeeId;
 	private String password;
 	private String engineerName;
 	private String domain;
+
+	@OneToOne(mappedBy = "engineer")
+	private Complaint complaint;
+//	@OneToMany(mappedBy = "engineer")
+//	List<Complaint> complaint;
 }
