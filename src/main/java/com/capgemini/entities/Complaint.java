@@ -1,4 +1,4 @@
-package com.capgemini.Sprint1ABCElectronics.entities;
+package com.capgemini.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,9 +18,10 @@ import lombok.Data;
 public class Complaint {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int complaintId;
+	private long complaintId;
 	private String complaintName;
 	private String status;
+//	private LocalDate
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_id", referencedColumnName = "clientId")

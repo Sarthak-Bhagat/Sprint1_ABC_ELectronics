@@ -1,4 +1,4 @@
-package com.capgemini.Sprint1ABCElectronics.entities;
+package com.capgemini.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 public class Engineer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int employeeId;
+	private long employeeId;
 	private String password;
 	private String engineerName;
-	private String domain;
+//	private String domain;
 
 	@OneToOne(mappedBy = "engineer")
 	private Complaint complaint;

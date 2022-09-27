@@ -1,4 +1,4 @@
-package com.capgemini.Sprint1ABCElectronics.entities;
+package com.capgemini.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

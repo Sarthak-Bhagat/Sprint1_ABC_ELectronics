@@ -1,4 +1,4 @@
-package com.capgemini.Sprint1ABCElectronics.entities;
+package com.capgemini.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import lombok.Data;
 public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int clientId;
+	private long clientId;
 	private String password;
 	private String address;
 	private long phoneNumber;
@@ -24,4 +24,7 @@ public class Client {
 	private Complaint complaint;
 //	@OneToMany(mappedBy = "client")
 //	List<Complaint> complaint;
+
+//	@OneToOne(mappedBy = "product")
+//	private Product product;
 }
