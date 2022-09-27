@@ -9,9 +9,9 @@ import com.capgemini.entities.Product;
 public interface ProductService {
 	void addProduct(Product product);
 
-	List<Engineer> getEngineers(int modelNumber);
+	List<Engineer> getEngineers(long modelNumber);
 
-	List<Complaint> getProductComplaints(int modelNumber);
+	List<Complaint> getProductComplaints(long modelNumber);
 
 	List<Product> getProducts(); // Why string param?
 

@@ -10,5 +10,5 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 
 	List<Product> findAllProducts();
 
-	Product getProductByModelNumber(int modelNumber);
+	Product getProductByModelNumber(long modelNumber);
 }

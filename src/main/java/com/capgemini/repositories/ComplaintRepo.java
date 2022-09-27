@@ -14,5 +14,5 @@ public interface ComplaintRepo extends JpaRepository<Complaint, Long> {
 
 	List<Complaint> findByModelNumber(long modelNumber);
 
-	List<Complaint> findComplaintsByModelNumber(int modelNumber);
+	List<Complaint> findComplaintsByModelNumber(long modelNumber);
 }

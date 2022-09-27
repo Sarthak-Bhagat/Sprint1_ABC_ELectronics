@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Complaint> getProductComplaints(int modelNumber) {
+	public List<Complaint> getProductComplaints(long modelNumber) {
 		return complaintRepo.findComplaintsByModelNumber(modelNumber);
 
 	}
