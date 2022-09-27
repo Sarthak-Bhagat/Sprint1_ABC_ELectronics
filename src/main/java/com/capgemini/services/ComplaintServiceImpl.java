@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
@@ -14,6 +15,7 @@ import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
 import com.capgemini.repositories.ProductRepo;
 
+@Service
 public class ComplaintServiceImpl implements ComplaintService {
 
 	@Autowired
@@ -32,6 +34,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	public String bookComplaint(long clientId, long modelNumber, String complainName) {
 		// TODO Load balanced randomEngineer
 		List<Engineer> engineers = engineerRepo.findAll();
+		System.out.println(engineers);
 		Random rand = new Random();
 		Engineer randomEngineer = engineers.get(rand.nextInt(engineers.size()));
 

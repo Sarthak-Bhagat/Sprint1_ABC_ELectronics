@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
@@ -13,6 +14,7 @@ import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
 import com.capgemini.repositories.ProductRepo;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
@@ -29,9 +31,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Engineer> getEngineers(int modelNumber) {
+	public List<Engineer> getEngineers(long modelNumber) {
 		// Get complaint from modelNumber, then get the engineerid from those complaints
-		List<Complaint> complaints = complaintRepo.findComplaintsByModelNumber(modelNumber);
+		List<Complaint> complaints = complaintRepo.findByModelNumber(modelNumber);
 		List<Engineer> engineers = new ArrayList<Engineer>();
 
 //		Iterator<Complaint> complaintIterator = complaints.iterator();
@@ -45,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Complaint> getProductComplaints(long modelNumber) {
-		return complaintRepo.findComplaintsByModelNumber(modelNumber);
+		return complaintRepo.findByModelNumber(modelNumber);
 
 	}
 

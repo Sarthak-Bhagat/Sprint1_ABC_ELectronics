@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
@@ -12,6 +13,7 @@ import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
 import com.capgemini.repositories.ProductRepo;
 
+@Service
 public class EngineerServiceImpl implements EngineerService {
 
 	@Autowired

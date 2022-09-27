@@ -18,12 +18,12 @@ public class EngineerController {
 	@Autowired
 	EngineerService service;
 
-	@GetMapping("/getAllOpenComplaints/{engineerId}")
+	@GetMapping("/open/{engineerId}")
 	public List<Complaint> getAllOpenComplaints(@PathVariable long engineerId) {
 		return service.getAllOpenComplaints(engineerId);
 	}
 
-	@GetMapping("/getResolvedComplaints/{engineerId}")
+	@GetMapping("/resolved/{engineerId}")
 	public List<Complaint> getResolvedComplaints(@PathVariable long engineerId) {
 		return service.getResolvedComplaints(engineerId);
 	}

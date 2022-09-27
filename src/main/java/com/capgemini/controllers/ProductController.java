@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.entities.Product;
-import com.capgemini.services.AdminService;
 import com.capgemini.services.ProductService;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-	
+
 	@Autowired
 	ProductService service;
 
@@ -32,7 +31,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/getassignedengineer/{modelNumber}")
-	
+
 	public List<Engineer> getEngineers(@PathVariable int modelNumber) {
 		return service.getEngineers(modelNumber);
 	}
@@ -41,7 +40,7 @@ public class ProductController {
 	public List<Complaint> getProductComplaints(@PathVariable long modelNumber) {
 		return service.getProductComplaints(modelNumber);
 	}
-	
+
 	@GetMapping("/all")
 	public List<Product> getProducts() {
 		return service.getProducts();
