@@ -27,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void addProduct(Product product) {
+		long years = java.time.temporal.ChronoUnit.YEARS.between(product.getDateofPurchase(),
+				product.getWarrantyDate());
+		product.setWarrentyYears(years);
 		productRepo.save(product);
 	}
 
