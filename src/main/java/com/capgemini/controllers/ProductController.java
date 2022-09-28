@@ -32,7 +32,7 @@ public class ProductController {
 
 	@GetMapping("/getassignedengineer/{modelNumber}")
 
-	public List<Engineer> getEngineers(@PathVariable int modelNumber) {
+	public List<Engineer> getEngineers(@PathVariable long modelNumber) {
 		return service.getEngineers(modelNumber);
 	}
 
