@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 	ClientRepo clientRepo;
 
 	@Override
+	@Transactional
 	public String bookComplaint(long clientId, long modelNumber, String complainName) {
-		// TODO Load balanced randomEngineer
+		// TODO Load balance randomEngineer
 		List<Engineer> engineers = engineerRepo.findAll();
 		System.out.println(engineers);
 		Random rand = new Random();
