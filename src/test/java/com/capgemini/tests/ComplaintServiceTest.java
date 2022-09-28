@@ -21,7 +21,7 @@ public class ComplaintServiceTest {
 	@Test
 	@Order(1)
 	@DisplayName("")
-	public void addEngineerTest() {
+	public void bookComplaintTest() {
 		service.bookComplaint(1, 1, "HELP");
 	}
 
