@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -27,13 +28,16 @@ public class Complaint {
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_id", referencedColumnName = "clientId")
+	@ToString.Exclude
 	private Client client;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_id", referencedColumnName = "employeeId")
+	@ToString.Exclude
 	private Engineer engineer;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_model_number", referencedColumnName = "modelNumber")
+	@ToString.Exclude
 	private Product product;
 }
