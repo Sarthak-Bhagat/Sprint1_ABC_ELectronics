@@ -6,5 +6,4 @@ import com.capgemini.entities.Product;
 
 public interface ProductRepo extends JpaRepository<Product, Long> {
 
-	Product getProductByModelNumber(long modelNumber);
 }

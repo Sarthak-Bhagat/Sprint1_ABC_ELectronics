@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
+import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -34,21 +35,34 @@ public class EngineerServiceImpl implements EngineerService {
 
 	@Override
 	public List<Complaint> getAllOpenComplaints(long engineerId) {
-		List<Complaint> complaints = complaintRepo.findByEmployeeId(engineerId);
+		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
 		return complaints.stream().filter(c -> c.getStatus() == "open").collect(Collectors.toList());
 	}
 
 	@Override
+	public List<Engineer> getEngineers() {
+		return engineerRepo.findAll();
+	}
+
+	@Override
 	public List<Complaint> getResolvedComplaints(long engineerId) {
-		List<Complaint> complaints = complaintRepo.findByEmployeeId(engineerId);
+		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
 		return complaints.stream().filter(c -> c.getStatus() == "resolved").collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean login(long userId, String password) {
+		Engineer engineer = engineerRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
+		String pass = engineer.getPassword();
+		return pass == password;
 	}
 
 //	@Override
 //	public List<Complaint> getResolvedComplaintsByDate(long engineerId, String date) {
 //		LocalDate.parse(date);
-//		List<Complaint> complaints = complaintRepo.findByEmployeeId(engineerId);
-//		return complaints.stream().filter(c -> c.getStatus() == "resolved").filter(c -> c.getDate() > complaints)).collect(Collectors.toList());
+//		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
+//		return complaints.stream().filter(c -> c.getStatus() == "resolved").filter(c -> c.getDate() > complaints)
+//				.collect(Collectors.toList());
 //	}
 
 }

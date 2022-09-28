@@ -8,6 +8,4 @@ public interface ClientRepo extends JpaRepository<Client, Long> {
 
 //	void changeStatusOfComplaint(int complaintId);
 
-	// Client saveClient(Client client);
-	Client getClientByClientId(int clientId);
 }

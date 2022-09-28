@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.entities.Client;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
+import com.capgemini.exceptions.InvalidComplaintIdException;
+import com.capgemini.exceptions.InvalidEngineerIdException;
+import com.capgemini.exceptions.InvalidModelNumberException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -33,25 +37,50 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public List<Client> getClients() {
+		return clientRepo.findAll();
+	}
+
+	@Override
 	public List<Complaint> getComplaints() {
 		return complaintRepo.findAll();
 	}
 
 	@Override
 	public List<Complaint> getComplaintsByProducts(long modelNumber) {
-		productRepo.findById(modelNumber);
-		return complaintRepo.findByModelNumber(modelNumber);
+		productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
+		return complaintRepo.findByProductModelNumber(modelNumber);
+	}
+
+	@Override
+	public List<Engineer> getEngineers() {
+		return engineerRepo.findAll();
+	}
+
+	@Override
+	public boolean login(long adminId, String password) {
+//		Engineer engineer = engineerRepo.findById(adminId).orElseThrow(InvalidCredentialsException::new);
+//		String pass = engineer.getPassword();
+		System.out.println(engineerRepo.findById(adminId).get());
+//		return pass == password;
+
+		return true;
 	}
 
 	@Override
 	public void removeEngineer(long employeeid) {
-		engineerRepo.delete(engineerRepo.findById(employeeid).get());
+		Engineer engineer = engineerRepo.findById(employeeid).orElseThrow(InvalidEngineerIdException::new);
+		engineerRepo.delete(engineer);
 	}
 
 	@Override
 	public Complaint replaceEmployeeFromComplaint(long employeeId, long complainId) {
-		complaintRepo.findById(complainId).get().setEngineer(engineerRepo.findById(employeeId).get());
-		return complaintRepo.findById(complainId).get();
+		Complaint complaint = complaintRepo.findById(complainId).orElseThrow(InvalidComplaintIdException::new);
+
+		Engineer engineer = engineerRepo.findById(employeeId).orElseThrow(InvalidEngineerIdException::new);
+
+		complaint.setEngineer(engineer);
+		return complaint;
 	}
 
 }

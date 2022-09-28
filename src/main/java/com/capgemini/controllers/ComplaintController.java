@@ -40,7 +40,7 @@ public class ComplaintController {
 		return service.getClientAllComplaints(clientId);
 	}
 
-	@GetMapping("/clinet/{clientId}/open")
+	@GetMapping("/client/{clientId}/open")
 	public List<Complaint> getClientAllOpenComplaints(@PathVariable long clientId) {
 		return service.getClientAllOpenComplaints(clientId);
 

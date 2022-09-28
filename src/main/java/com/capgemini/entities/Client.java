@@ -1,5 +1,6 @@
 package com.capgemini.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.Getter;
@@ -28,11 +32,15 @@ public class Client {
 	private String address;
 	private long phoneNumber;
 
-//	@OneToOne(mappedBy = "client")
-//	private Complaint complaint;
 	@OneToMany(mappedBy = "client")
-	List<Complaint> complaint;
+	List<Complaint> complaint = new ArrayList<>();
 
-//	@OneToOne(mappedBy = "product")
-//	private Product product;
+	@OneToMany()
+	@JsonIgnore
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<Product> product = new ArrayList<Product>();
+
+	public void addProduct(Product product) {
+		this.product.add(product);
+	}
 }

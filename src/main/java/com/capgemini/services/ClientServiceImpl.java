@@ -1,10 +1,17 @@
 package com.capgemini.services;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Engineer;
+import com.capgemini.entities.Product;
+import com.capgemini.exceptions.InvalidClientIdException;
+import com.capgemini.exceptions.InvalidComplaintIdException;
+import com.capgemini.exceptions.InvalidCredentialsException;
+import com.capgemini.exceptions.InvalidModelNumberException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -31,13 +38,30 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
+	@Transactional
+	public void addProduct(long modelNumber, long clientId) {
+		Client client = clientRepo.findById(clientId).orElseThrow(InvalidClientIdException::new);
+		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
+		client.addProduct(product);
+		clientRepo.save(client);
+
+	}
+
+	@Override
 	public Client getClientByClientId(long clientId) {
-		return clientRepo.findById(clientId).get();
+		return clientRepo.findById(clientId).orElseThrow(InvalidClientIdException::new);
 	}
 
 	@Override
 	public Engineer getEngineerByComplaintId(long complaintId) {
-		return complaintRepo.findById(complaintId).get().getEngineer();
+		return complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new).getEngineer();
+	}
+
+	@Override
+	public boolean login(long clientId, String password) {
+		Client client = clientRepo.findById(clientId).orElseThrow(InvalidCredentialsException::new);
+		String pass = client.getPassword();
+		return pass == password;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.entities.Product;
+import com.capgemini.exceptions.InvalidModelNumberException;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
 import com.capgemini.repositories.ProductRepo;
@@ -36,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Engineer> getEngineers(long modelNumber) {
 		// Get complaint from modelNumber, then get the engineerid from those complaints
-		List<Complaint> complaints = complaintRepo.findByModelNumber(modelNumber);
+		List<Complaint> complaints = complaintRepo.findByProductModelNumber(modelNumber);
 		List<Engineer> engineers = new ArrayList<Engineer>();
 
 //		Iterator<Complaint> complaintIterator = complaints.iterator();
@@ -50,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Complaint> getProductComplaints(long modelNumber) {
-		return complaintRepo.findByModelNumber(modelNumber);
+		return complaintRepo.findByProductModelNumber(modelNumber);
 
 	}
 
@@ -68,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 	public void updateProductWarranty(String warranty, long modelNumber) {
 		// Which product?
 		LocalDate warrantDate = LocalDate.parse(warranty);
-		Product product = productRepo.findById(modelNumber).get();
+		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
 		product.setWarrantyDate(warrantDate);
 		productRepo.save(product);
 	}

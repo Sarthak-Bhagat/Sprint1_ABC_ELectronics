@@ -1,5 +1,6 @@
 package com.capgemini.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Service;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.entities.Product;
+import com.capgemini.exceptions.InvalidClientIdException;
+import com.capgemini.exceptions.InvalidComplaintIdException;
+import com.capgemini.exceptions.InvalidModelNumberException;
+import com.capgemini.exceptions.OutOfWarrantyException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -40,11 +45,16 @@ public class ComplaintServiceImpl implements ComplaintService {
 		System.out.println(engineers);
 		Random rand = new Random();
 		Engineer randomEngineer = engineers.get(rand.nextInt(engineers.size()));
+		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
+
+		if (product.getWarrantyDate().compareTo(LocalDate.now()) <= 0) {
+			throw new OutOfWarrantyException();
+		}
 
 		Complaint complaint = new Complaint();
 		complaint.setComplaintName(complainName);
-		complaint.setClient(clientRepo.findById(clientId).get());
-		complaint.setProduct(productRepo.findById(modelNumber).get());
+		complaint.setClient(clientRepo.findById(clientId).orElseThrow(InvalidClientIdException::new));
+		complaint.setProduct(product);
 		complaint.setEngineer(randomEngineer);
 		complaint.setStatus("open");
 
@@ -54,7 +64,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
 	@Override
 	public String changeComplaintStatus(long complaintId) {
-		Complaint complaint = complaintRepo.findById(complaintId).get();
+		Complaint complaint = complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new);
 		String status = complaint.getStatus();
 //		status = status == "open" ? "resolved" : "open";
 		if (status == "open") {
@@ -69,23 +79,23 @@ public class ComplaintServiceImpl implements ComplaintService {
 
 	@Override
 	public List<Complaint> getClientAllComplaints(long clientid) {
-		return complaintRepo.findByClientId(clientid);
+		return complaintRepo.findByClientClientId(clientid);
 	}
 
 	@Override
 	public List<Complaint> getClientAllOpenComplaints(long clientid) {
-		List<Complaint> complaints = complaintRepo.findByClientId(clientid);
+		List<Complaint> complaints = complaintRepo.findByClientClientId(clientid);
 		return complaints.stream().filter(c -> c.getStatus() == "open").collect(Collectors.toList());
 	}
 
 	@Override
 	public Engineer getEngineer(long complaintId) {
-		return complaintRepo.findById(complaintId).get().getEngineer();
+		return complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new).getEngineer();
 	}
 
 	@Override
 	public Product getProduct(long complaintId) {
-		return complaintRepo.findById(complaintId).get().getProduct();
+		return complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new).getProduct();
 	}
 
 }

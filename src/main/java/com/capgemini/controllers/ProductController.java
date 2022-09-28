@@ -27,7 +27,7 @@ public class ProductController {
 	@PostMapping("/add")
 	public ResponseEntity<String> addProduct(@RequestBody Product product) {
 		service.addProduct(product);
-		return new ResponseEntity<String>("ADDED ENGINEER", HttpStatus.ACCEPTED);
+		return new ResponseEntity<String>("ADDED PRODUCT", HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/getassignedengineer/{modelNumber}")
@@ -49,7 +49,7 @@ public class ProductController {
 	@GetMapping("/remove/{modelNumber}")
 	public ResponseEntity<String> removeProduct(@PathVariable long modelNumber) {
 		service.removeProduct(modelNumber);
-		return new ResponseEntity<String>("REMOVED ENGINEER", HttpStatus.OK);
+		return new ResponseEntity<String>("REMOVED Product", HttpStatus.OK);
 
 	}
 

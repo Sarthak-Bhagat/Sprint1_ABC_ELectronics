@@ -1,5 +1,6 @@
 package com.capgemini.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -24,10 +25,7 @@ public class Engineer {
 	private long employeeId;
 	private String password;
 	private String engineerName;
-//	private String domain;
 
-//	@OneToOne(mappedBy = "engineer")
-//	private Complaint complaint;
 	@OneToMany(mappedBy = "engineer")
-	List<Complaint> complaint;
+	List<Complaint> complaint = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.capgemini.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -22,19 +23,14 @@ public class Product {
 	@Id
 	@SequenceGenerator(name = "product_sequence")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "product_sequence")
-	private long modelNumber; // Changed from String to int
+	private long modelNumber;
 	private String productName;
 	private String productCategoryName;
 	private LocalDate dateofPurchase;
 	private long warrentyYears;
 	private LocalDate warrantyDate;
-//	private String warrantyStatus;
 
 	@OneToMany(mappedBy = "product")
-	List<Complaint> complaint;
-
-//	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "client_id", referencedColumnName = "clientId")
-//	private Client client;
+	List<Complaint> complaint = new ArrayList<>();
 
 }
