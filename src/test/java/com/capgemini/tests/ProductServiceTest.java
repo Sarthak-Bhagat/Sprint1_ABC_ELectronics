@@ -18,7 +18,7 @@ import com.capgemini.services.ProductService;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 public class ProductServiceTest {
-/*
+
 	@Autowired
 	ProductService service;
 
@@ -63,7 +63,7 @@ public class ProductServiceTest {
 		product.setWarrentyYears(1);
 		service.addProduct(product);
 	}
-	/*
+	
 	@Test
 	@Order(4)
 	@DisplayName("Adding Product 4")
