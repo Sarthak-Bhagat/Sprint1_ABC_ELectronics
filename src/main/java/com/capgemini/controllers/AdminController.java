@@ -1,7 +1,6 @@
 package com.capgemini.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,14 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.exceptions.InvalidCredentialsException;
-import com.capgemini.extra.LoginCreds;
+import com.capgemini.extra.LoginDetails;
 import com.capgemini.services.AdminService;
 
 @RestController
@@ -32,7 +30,14 @@ public class AdminController {
 	AdminService service;
 
 	@PostMapping("/engineer/add")
-	public ResponseEntity<String> addEngineer(@RequestBody Engineer engineer) {
+	public ResponseEntity<String> addEngineer(@RequestBody Engineer engineer, HttpServletRequest request) {
+
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+
 		service.addEngineer(engineer);
 		List<Complaint> complaints = service.getComplaints();
 		System.out.println(complaints);
@@ -41,73 +46,115 @@ public class AdminController {
 
 	private boolean checkSession(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-
-		boolean validLogin = false;
-		Optional<Boolean> nullable = Optional.ofNullable((boolean) session.getAttribute("admin"));
-		if (nullable.isPresent() && (boolean) session.getAttribute("admin")) {
-			validLogin = true;
+		try {
+			LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+			System.out.println(currentUser);
+			if (currentUser.isAdmin()) {
+				return true;
+			}
+			return false;
+		} catch (NullPointerException e) {
+			return false;
 		}
-		return validLogin;
 	}
 
 	@GetMapping("/client/get/all")
 	public ResponseEntity<List<Client>> getClients(HttpServletRequest request) {
+
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
-			throw new RuntimeException("Invalid user Click here to <a href = 'loginpageURL'>Login</a> ");
+			throw new InvalidCredentialsException();
 		}
+
 		List<Client> clients = service.getClients();
 		return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
 	}
 
 	@GetMapping("/complaint/all")
-	@ResponseBody
-	public ResponseEntity<List<Complaint>> getComplaints() {
+	public ResponseEntity<List<Complaint>> getComplaints(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		List<Complaint> complaints = service.getComplaints();
 		System.out.println(complaints);
 		return new ResponseEntity<List<Complaint>>(complaints, HttpStatus.OK);
-//		return service.getComplaints();
 	}
 
 	@GetMapping("/complaint/{modelNumber}")
-	public List<Complaint> getComplaintsByProducts(@PathVariable long modelNumber) {
+	public List<Complaint> getComplaintsByProducts(@PathVariable long modelNumber, HttpServletRequest request) {
+
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return service.getComplaintsByProducts(modelNumber);
 	}
 
 	@GetMapping("/engineer/get/all")
-	public ResponseEntity<List<Engineer>> getEngineers() {
+	public ResponseEntity<List<Engineer>> getEngineers(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		List<Engineer> engineers = service.getEngineers();
 		return new ResponseEntity<List<Engineer>>(engineers, HttpStatus.OK);
 	}
 
 	@GetMapping("/engineer/remove/{engineerId}")
-	public ResponseEntity<String> removeEngineer(@PathVariable long engineerId) {
+	public ResponseEntity<String> removeEngineer(@PathVariable long engineerId, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		service.removeEngineer(engineerId);
 		return new ResponseEntity<String>("REMOVED ENGINEER", HttpStatus.OK);
 
 	}
 
 	@GetMapping("/complaint/{engineerId}/{complaintId}")
-	public void replaceEmployeeFromComplaint(@PathVariable long engineerId, @PathVariable long complainId) {
+	public void replaceEmployeeFromComplaint(@PathVariable long engineerId, @PathVariable long complainId,
+			HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new RuntimeException("Invalid user Click here to <a href = 'loginpageURL'>Login</a> ");
+		}
+
 		service.replaceEmployeeFromComplaint(engineerId, complainId);
 	}
 
 	@PostMapping("/signin")
-	public void signInWithCredentials(@RequestBody LoginCreds creds, HttpServletRequest request) {
+	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
+			HttpServletRequest request) {
 
-		long username = creds.getUserId();
-		String password = creds.getPassword();
-
-		if (service.login(username, password)) {
+		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
 			HttpSession session = request.getSession(true);
-
-			session.setAttribute("admin", true);
-		} else {
-			throw new InvalidCredentialsException();
+			loginDetails.setClient(true);
+			session.setAttribute("userDetails", loginDetails);
+			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 		}
-
+		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 	}
 
+	@GetMapping("/signout")
+	public ResponseEntity<String> signout(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+		}
+
+		HttpSession session = request.getSession(true);
+		LoginDetails loginDetails = (LoginDetails) session.getAttribute("userDetails");
+		loginDetails.setAdmin(false);
+		session.setAttribute("userDetails", loginDetails);
+		return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
+	}
 }
