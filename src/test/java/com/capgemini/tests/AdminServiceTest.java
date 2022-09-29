@@ -47,6 +47,31 @@ public class AdminServiceTest {
 		service.addEngineer(Engineer9);
 		service.addEngineer(Engineer10);
 	}
+	
+	@Test
+	@Order(2)
+	@DisplayName("Remove Engineer")
+	public void removeEngineerTest() {
+		service.removeEngineer(2);
+	}
+	@Test
+	@Order(3)
+	@DisplayName("Get Clients")
+	public void getClientsTest() {
+		service.getClients();
+	}
+	@Test
+	@Order(4)
+	@DisplayName("Get Complaints")
+	public void getComplaints() {
+		service.getComplaints();
+	}
+	@Test
+	@Order(5)
+	@DisplayName("Get ComplaintsByProducts")
+	public void getComplaintsByProducts() {
+		service.getComplaintsByProducts(2);
+	}
 
 //	@Test
 //	@Order(1)
@@ -138,11 +163,6 @@ public class AdminServiceTest {
 //		service.addEngineer(engineer);
 //	}
 
-	@Test
-	@Order(2)
-	@DisplayName("Remove Engineer")
-	public void removeEngineerTest() {
-		service.removeEngineer(2);
-	}
+	
 
 }
