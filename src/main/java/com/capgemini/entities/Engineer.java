@@ -25,6 +25,10 @@ public class Engineer {
 	private long employeeId;
 	private String password;
 	private String engineerName;
+	public Engineer(String engName, String password) {
+		this.engineerName= engName;
+		this.password=password;
+	}
 
 	@OneToMany(mappedBy = "engineer")
 	List<Complaint> complaint = new ArrayList<>();
