@@ -53,4 +53,12 @@ public class MyExceptionHandler {
 		return new ResponseEntity<ExceptionDescription>(descript, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ExceptionHandler(OutOfWarrantyException.class)
+	public ResponseEntity<?> handleMyOwnException(OutOfWarrantyException myException, WebRequest request) {
+		ExceptionDescription descript = new ExceptionDescription(myException.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<ExceptionDescription>(descript, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 }
