@@ -123,7 +123,7 @@ public class AdminController {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
-			throw new RuntimeException("Invalid user Click here to <a href = 'loginpageURL'>Login</a> ");
+			throw new InvalidCredentialsException();
 		}
 
 		service.replaceEmployeeFromComplaint(engineerId, complainId);
@@ -136,7 +136,7 @@ public class AdminController {
 		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
 			HttpSession session = request.getSession(true);
-			loginDetails.setClient(true);
+			loginDetails.setAdmin(true);
 			session.setAttribute("userDetails", loginDetails);
 			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 		}

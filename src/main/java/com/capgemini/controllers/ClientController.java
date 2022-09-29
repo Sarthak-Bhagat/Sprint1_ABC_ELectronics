@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Engineer;
 import com.capgemini.exceptions.InvalidCredentialsException;
-import com.capgemini.extra.LoginCreds;
+import com.capgemini.extra.LoginDetails;
 import com.capgemini.services.ClientServiceImpl;
 
 @RestController
@@ -27,36 +27,78 @@ public class ClientController {
 	ClientServiceImpl cService;
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addClient(@RequestBody Client client) {
+	public ResponseEntity<String> addClient(@RequestBody Client client,HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		cService.addClient(client);
 		return new ResponseEntity<String>("ADDED CLIENT", HttpStatus.ACCEPTED);
 	}
+	
+	private boolean checkSession(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		try {
+			LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+			System.out.println(currentUser);
+			if (currentUser.isClient()) {
+				return true;
+			}
+			return false;
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
 
 	@GetMapping("/get/{clientId}")
-	public Client getClientByClientId(@PathVariable long clientId) {
+	public Client getClientByClientId(@PathVariable long clientId,HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return cService.getClientByClientId(clientId);
 	}
 
 	@GetMapping("/getengineer/{complaintid}")
-	public Engineer getEngineerByComplaintId(@PathVariable long complaintId) {
+	public Engineer getEngineerByComplaintId(@PathVariable long complaintId,HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return cService.getEngineerByComplaintId(complaintId);
 	}
 
 	@PostMapping("/signin")
-	public void signInWithCredentials(@RequestBody LoginCreds creds, HttpServletRequest request) {
+	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
+			HttpServletRequest request) {
 
-		long username = creds.getUserId();
-		String password = creds.getPassword();
-
-		if (cService.login(username, password)) {
+		if (cService.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
 			HttpSession session = request.getSession(true);
+			loginDetails.setClient(true);
+			session.setAttribute("userDetails", loginDetails);
+			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
+		}
+		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+	}
 
-			session.setAttribute("engineer", true);
-		} else {
-			throw new InvalidCredentialsException();
+	@GetMapping("/signout")
+	public ResponseEntity<String> signout(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 		}
 
+		HttpSession session = request.getSession(true);
+		LoginDetails loginDetails = (LoginDetails) session.getAttribute("userDetails");
+		loginDetails.setAdmin(false);
+		session.setAttribute("userDetails", loginDetails);
+		return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 	}
+	
 
 }
