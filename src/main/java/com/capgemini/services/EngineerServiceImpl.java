@@ -54,7 +54,7 @@ public class EngineerServiceImpl implements EngineerService {
 	public boolean login(long userId, String password) {
 		Engineer engineer = engineerRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
 		String pass = engineer.getPassword();
-		return pass == password;
+		return pass.equals(password);
 	}
 
 

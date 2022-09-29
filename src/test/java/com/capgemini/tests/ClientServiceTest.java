@@ -48,9 +48,20 @@ public class ClientServiceTest {
 
 	@Test
 	@Order(2)
-	@DisplayName("Product Add Test")
+	@DisplayName("Product Add product to client test")
 	public void clientAddProductTest() {
 		service.addProduct(3, 1);
+		service.addProduct(2, 2);
+		service.addProduct(4, 4);
+		service.addProduct(5, 1);
+		
+		service.addProduct(6, 1);
+		service.addProduct(7, 2);
+		service.addProduct(8, 4);
+		service.addProduct(9, 1);
+		
+		service.addProduct(10, 1);
+
 	}
 
 	@Test

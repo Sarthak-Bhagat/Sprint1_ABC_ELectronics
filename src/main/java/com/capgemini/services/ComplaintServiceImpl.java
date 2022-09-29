@@ -15,6 +15,7 @@ import com.capgemini.entities.Engineer;
 import com.capgemini.entities.Product;
 import com.capgemini.exceptions.InvalidClientIdException;
 import com.capgemini.exceptions.InvalidComplaintIdException;
+import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.exceptions.InvalidModelNumberException;
 import com.capgemini.exceptions.OutOfWarrantyException;
 import com.capgemini.repositories.ClientRepo;
@@ -66,12 +67,14 @@ public class ComplaintServiceImpl implements ComplaintService {
 	public String changeComplaintStatus(long complaintId) {
 		Complaint complaint = complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new);
 		String status = complaint.getStatus();
-//		status = status == "open" ? "resolved" : "open";
-		if (status == "open") {
-			status = "resolved";
-		} else {
-			status = "open";
-		}
+		//System.out.println(status);
+		status = status.equals("open")? "resolved" : "open";
+//		if (status == "open") {
+//			status = "resolved";
+//		} else {
+//			status = "open";
+//		}
+		//System.out.println(status);
 		complaint.setStatus(status);
 
 		return "The complaint has been set to " + status;
@@ -101,7 +104,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 	@Override
 	public boolean login(long userId, String password) {
 		
-		return false;
+		Engineer engineer = engineerRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
+		String pass = engineer.getPassword();
+		return pass.equals(password);
 	}
 
 }

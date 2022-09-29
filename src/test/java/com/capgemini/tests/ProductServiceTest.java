@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -52,15 +53,55 @@ public class ProductServiceTest {
 		// TODO Test cases for out of warranty
 	}
 
-	@Test
-	@Order(2)
-	@DisplayName("Invalid Test ")
-	public void invalidTest() {
+	  @Test 
+	  @Order(2)	 
+	  @DisplayName("Remove Product") 
+	  public void removeProductTest() {
+	   service.removeProduct(10);
+	   
+	   }
+	  
+	  
+	  @Test 
+	  @Order(3)	 
+	  @DisplayName("get all Product") 
+	  public void getProductsTest() {
+		  
+		  service.getProducts();
+		  		  
+	  }
+	  
+	  @Test 
+	  @Order(4)	 
+	  @DisplayName("get Product complaints") 
+	  public void getProductComplaintsTest() {		  
+		 
+		  service.getProductComplaints(1);
+		  
+	  }
+	  
+	  @Test 
+	  @Order(5)	 
+	  @DisplayName("get engineers") 
+	  public void getEngineersTest() {	 
+		 
+		  //only complain query executed
+		  service.getEngineers(1);
+		  
+	  }
+	  
+	  @Test 
+	  @Order(6)	 
+	  @DisplayName("Invalid Test Invalid model number while remove product") 
+	  public void invalidTest() {	 
+		 
+		  Assertions.assertThrows(InvalidModelNumberException.class,() -> {
+			  service.removeProduct(100000);
+			  });
+		  
+	  }
+	  
+	 
 
-		assertThrows(InvalidModelNumberException.class, () -> {
-			service.removeProduct(100000);
-		});
-
-	}
 
 }

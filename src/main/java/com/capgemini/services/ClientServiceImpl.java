@@ -12,7 +12,7 @@ import com.capgemini.exceptions.InvalidClientIdException;
 import com.capgemini.exceptions.InvalidComplaintIdException;
 import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.exceptions.InvalidModelNumberException;
-import com.capgemini.exceptions.ProductUnavailableException;
+import com.capgemini.exceptions.ProductUnvailableException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -44,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
 		Client client = clientRepo.findById(clientId).orElseThrow(InvalidClientIdException::new);
 		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
 		if (product.isOwned()) {
-			throw new ProductUnavailableException();
+			throw new ProductUnvailableException();
 		}
 		client.addProduct(product);
 		clientRepo.save(client);
@@ -65,7 +65,7 @@ public class ClientServiceImpl implements ClientService {
 	public boolean login(long clientId, String password) {
 		Client client = clientRepo.findById(clientId).orElseThrow(InvalidCredentialsException::new);
 		String pass = client.getPassword();
-		return pass == password;
+		return pass.equals(password);
 	}
 
 	@Override
