@@ -98,4 +98,10 @@ public class ComplaintServiceImpl implements ComplaintService {
 		return complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new).getProduct();
 	}
 
+	@Override
+	public boolean login(long userId, String password) {
+		
+		return false;
+	}
+
 }
