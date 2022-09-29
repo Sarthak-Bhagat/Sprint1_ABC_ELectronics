@@ -16,12 +16,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "tbl_client")
 public class Client {
 	@Id
@@ -42,5 +44,13 @@ public class Client {
 
 	public void addProduct(Product product) {
 		this.product.add(product);
+	}
+	
+	public Client(String address,String password,long phoneNumber) {
+		this.address=address;
+		this.password=password;
+		this.phoneNumber=phoneNumber;
+		
+		
 	}
 }
