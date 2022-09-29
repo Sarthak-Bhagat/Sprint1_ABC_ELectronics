@@ -2,17 +2,24 @@ package com.capgemini.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.entities.Product;
+import com.capgemini.exceptions.InvalidCredentialsException;
+import com.capgemini.extra.LoginDetails;
 import com.capgemini.services.ComplaintService;
 
 @RestController
@@ -24,36 +31,109 @@ public class ComplaintController {
 
 	@GetMapping("/book/{clientId}/{modelNumber}/{complaintName}")
 	public ResponseEntity<String> bookComplaint(@PathVariable long clientId, @PathVariable long modelNumber,
-			@PathVariable String complaintName) {
+			@PathVariable String complaintName, HttpServletRequest request) {
 		// TODO Switch to Post
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		service.bookComplaint(clientId, modelNumber, complaintName);
 		return new ResponseEntity<String>("Complaint Booked", HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/changestatus/{complaintId}")
-	public String changeComplaintStatus(@PathVariable long complaintId) {
+	public String changeComplaintStatus(@PathVariable long complaintId , HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return service.changeComplaintStatus(complaintId);
 	}
 
 	@GetMapping("/client/{clinetId}/all")
-	public List<Complaint> getClientAllComplaints(@PathVariable long clientId) {
+	public List<Complaint> getClientAllComplaints(@PathVariable long clientId , HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return service.getClientAllComplaints(clientId);
 	}
 
 	@GetMapping("/client/{clientId}/open")
-	public List<Complaint> getClientAllOpenComplaints(@PathVariable long clientId) {
+	public List<Complaint> getClientAllOpenComplaints(@PathVariable long clientId , HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return service.getClientAllOpenComplaints(clientId);
 
 	}
 
 	@GetMapping("/getengineer/{complaintId}")
-	public Engineer getEngineer(@PathVariable long complaintId) {
+	public Engineer getEngineer(@PathVariable long complaintId , HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return service.getEngineer(complaintId);
 	}
 
 	@GetMapping("/getproduct/{complaintId}")
-	public Product getProduct(@PathVariable long complaintId) {
+	public Product getProduct(@PathVariable long complaintId , HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
 		return service.getProduct(complaintId);
+	}
+	
+	private boolean checkSession(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		try {
+			LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+			System.out.println(currentUser);
+			if (currentUser.isClient()) {
+				return true;
+			}
+			return false;
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
+	
+	@PostMapping("/signin")
+	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
+			HttpServletRequest request) {
+
+		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
+
+			HttpSession session = request.getSession(true);
+			loginDetails.setClient(true);
+			session.setAttribute("userDetails", loginDetails);
+			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
+		}
+		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("/signout")
+	public ResponseEntity<String> signout(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+		}
+
+		HttpSession session = request.getSession(true);
+		LoginDetails loginDetails = (LoginDetails) session.getAttribute("userDetails");
+		loginDetails.setClient(false);
+		session.setAttribute("userDetails", loginDetails);
+		return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 	}
 
 }
