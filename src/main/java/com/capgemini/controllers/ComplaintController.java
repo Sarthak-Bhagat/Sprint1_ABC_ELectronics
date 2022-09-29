@@ -29,21 +29,23 @@ public class ComplaintController {
 	@Autowired
 	ComplaintService service;
 
-	@GetMapping("/book/{clientId}/{modelNumber}/{complaintName}")
-	public ResponseEntity<String> bookComplaint(@PathVariable long clientId, @PathVariable long modelNumber,
-			@PathVariable String complaintName, HttpServletRequest request) {
+	@GetMapping("/book/{modelNumber}/{complaintName}")
+	public ResponseEntity<String> bookComplaint(@PathVariable long modelNumber, @PathVariable String complaintName,
+			HttpServletRequest request) {
 		// TODO Switch to Post
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		service.bookComplaint(clientId, modelNumber, complaintName);
+		HttpSession session = request.getSession();
+		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+		service.bookComplaint(currentUser.getUserId(), modelNumber, complaintName);
 		return new ResponseEntity<String>("Complaint Booked", HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/changestatus/{complaintId}")
-	public String changeComplaintStatus(@PathVariable long complaintId , HttpServletRequest request) {
+	public String changeComplaintStatus(@PathVariable long complaintId, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
@@ -52,47 +54,6 @@ public class ComplaintController {
 		return service.changeComplaintStatus(complaintId);
 	}
 
-	@GetMapping("/client/{clinetId}/all")
-	public List<Complaint> getClientAllComplaints(@PathVariable long clientId , HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
-
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
-		return service.getClientAllComplaints(clientId);
-	}
-
-	@GetMapping("/client/{clientId}/open")
-	public List<Complaint> getClientAllOpenComplaints(@PathVariable long clientId , HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
-
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
-		return service.getClientAllOpenComplaints(clientId);
-
-	}
-
-	@GetMapping("/getengineer/{complaintId}")
-	public Engineer getEngineer(@PathVariable long complaintId , HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
-
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
-		return service.getEngineer(complaintId);
-	}
-
-	@GetMapping("/getproduct/{complaintId}")
-	public Product getProduct(@PathVariable long complaintId , HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
-
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
-		return service.getProduct(complaintId);
-	}
-	
 	private boolean checkSession(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		try {
@@ -106,7 +67,48 @@ public class ComplaintController {
 			return false;
 		}
 	}
-	
+
+	@GetMapping("/client/{clinetId}/all")
+	public List<Complaint> getClientAllComplaints(@PathVariable long clientId, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		return service.getClientAllComplaints(clientId);
+	}
+
+	@GetMapping("/client/{clientId}/open")
+	public List<Complaint> getClientAllOpenComplaints(@PathVariable long clientId, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		return service.getClientAllOpenComplaints(clientId);
+
+	}
+
+	@GetMapping("/getengineer/{complaintId}")
+	public Engineer getEngineer(@PathVariable long complaintId, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		return service.getEngineer(complaintId);
+	}
+
+	@GetMapping("/getproduct/{complaintId}")
+	public Product getProduct(@PathVariable long complaintId, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		return service.getProduct(complaintId);
+	}
+
 	@PostMapping("/signin")
 	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
 			HttpServletRequest request) {

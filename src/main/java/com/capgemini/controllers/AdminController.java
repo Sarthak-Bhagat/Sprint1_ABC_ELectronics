@@ -39,8 +39,6 @@ public class AdminController {
 		}
 
 		service.addEngineer(engineer);
-		List<Complaint> complaints = service.getComplaints();
-		System.out.println(complaints);
 		return new ResponseEntity<String>("ADDED ENGINEER", HttpStatus.ACCEPTED);
 	}
 
@@ -58,6 +56,16 @@ public class AdminController {
 		}
 	}
 
+	@GetMapping("/engineer/get/all")
+	public List<Engineer> getAllEngineers(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		return service.getEngineers();
+	}
+
 	@GetMapping("/client/get/all")
 	public ResponseEntity<List<Client>> getClients(HttpServletRequest request) {
 
@@ -71,7 +79,7 @@ public class AdminController {
 		return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
 	}
 
-	@GetMapping("/complaint/all")
+	@GetMapping("/complaint/get/all")
 	public ResponseEntity<List<Complaint>> getComplaints(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
@@ -83,26 +91,16 @@ public class AdminController {
 		return new ResponseEntity<List<Complaint>>(complaints, HttpStatus.OK);
 	}
 
-	@GetMapping("/complaint/{modelNumber}")
-	public List<Complaint> getComplaintsByProducts(@PathVariable long modelNumber, HttpServletRequest request) {
+	@GetMapping("/complaint/product/{modelNumber}")
+	public ResponseEntity<List<Complaint>> getComplaintsByProducts(@PathVariable long modelNumber,
+			HttpServletRequest request) {
 
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		return service.getComplaintsByProducts(modelNumber);
-	}
-
-	@GetMapping("/engineer/get/all")
-	public ResponseEntity<List<Engineer>> getEngineers(HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
-
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
-		List<Engineer> engineers = service.getEngineers();
-		return new ResponseEntity<List<Engineer>>(engineers, HttpStatus.OK);
+		return new ResponseEntity<List<Complaint>>(service.getComplaintsByProducts(modelNumber), HttpStatus.OK);
 	}
 
 	@GetMapping("/engineer/remove/{engineerId}")
@@ -130,8 +128,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
-			HttpServletRequest request) {
+	public ResponseEntity<String> signIn(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
 
 		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
@@ -146,7 +143,6 @@ public class AdminController {
 	@GetMapping("/signout")
 	public ResponseEntity<String> signout(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
-
 		if (!validLogin) {
 			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 		}

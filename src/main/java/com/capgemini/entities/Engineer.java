@@ -11,12 +11,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "tbl_engineer")
 public class Engineer {
 	@Id
@@ -25,11 +29,13 @@ public class Engineer {
 	private long employeeId;
 	private String password;
 	private String engineerName;
-	public Engineer(String engName, String password) {
-		this.engineerName= engName;
-		this.password=password;
-	}
 
 	@OneToMany(mappedBy = "engineer")
 	List<Complaint> complaint = new ArrayList<>();
+
+	public Engineer(String engName, String password) {
+		this.engineerName = engName;
+		this.password = password;
+	}
+
 }

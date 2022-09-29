@@ -54,6 +54,11 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public Engineer getEngineerById(long engineerId) {
+		return engineerRepo.findById(engineerId).orElseThrow(InvalidEngineerIdException::new);
+	}
+
+	@Override
 	public List<Engineer> getEngineers() {
 		return engineerRepo.findAll();
 	}

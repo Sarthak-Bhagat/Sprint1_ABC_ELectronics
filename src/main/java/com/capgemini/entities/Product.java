@@ -31,17 +31,16 @@ public class Product {
 	private LocalDate dateofPurchase;
 	private long warrentyYears;
 	private LocalDate warrantyDate;
+	private boolean owned;
 
 	@OneToMany(mappedBy = "product")
 	List<Complaint> complaint = new ArrayList<>();
-	
-	public Product(LocalDate dateofPurchase,String productCategoryName,
-			String productName,LocalDate warrantyDate) {
-		this.dateofPurchase=dateofPurchase;
-		this.productCategoryName=productCategoryName;
-		this.productName=productName;
-		this.warrantyDate=warrantyDate;
-				
+
+	public Product(LocalDate dateofPurchase, String productCategoryName, String productName, LocalDate warrantyDate) {
+		this.dateofPurchase = dateofPurchase;
+		this.productCategoryName = productCategoryName;
+		this.productName = productName;
+		this.warrantyDate = warrantyDate;
 	}
 
 }

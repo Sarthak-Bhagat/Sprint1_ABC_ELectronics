@@ -24,19 +24,19 @@ import com.capgemini.services.ClientServiceImpl;
 public class ClientController {
 
 	@Autowired
-	ClientServiceImpl cService;
+	ClientServiceImpl service;
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addClient(@RequestBody Client client,HttpServletRequest request) {
+	public ResponseEntity<String> addClient(@RequestBody Client client, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		cService.addClient(client);
+		service.addClient(client);
 		return new ResponseEntity<String>("ADDED CLIENT", HttpStatus.ACCEPTED);
 	}
-	
+
 	private boolean checkSession(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		try {
@@ -51,31 +51,33 @@ public class ClientController {
 		}
 	}
 
-	@GetMapping("/get/{clientId}")
-	public Client getClientByClientId(@PathVariable long clientId,HttpServletRequest request) {
+	@GetMapping("/get")
+	public ResponseEntity<Client> getClientByClientId(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		return cService.getClientByClientId(clientId);
+		HttpSession session = request.getSession();
+		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+		return new ResponseEntity<Client>(service.getClientByClientId(currentUser.getUserId()), HttpStatus.OK);
 	}
 
 	@GetMapping("/getengineer/{complaintid}")
-	public Engineer getEngineerByComplaintId(@PathVariable long complaintId,HttpServletRequest request) {
+	public Engineer getEngineerByComplaintId(@PathVariable long complaintId, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		return cService.getEngineerByComplaintId(complaintId);
+		return service.getEngineerByComplaintId(complaintId);
 	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
 			HttpServletRequest request) {
 
-		if (cService.login(loginDetails.getUserId(), loginDetails.getPassword())) {
+		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
 			HttpSession session = request.getSession(true);
 			loginDetails.setClient(true);
@@ -99,6 +101,5 @@ public class ClientController {
 		session.setAttribute("userDetails", loginDetails);
 		return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 	}
-	
 
 }

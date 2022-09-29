@@ -19,6 +19,8 @@ public interface AdminService {
 
 	List<Complaint> getComplaintsByProducts(long modelNumber);
 
+	Engineer getEngineerById(long engineerId);
+
 	List<Engineer> getEngineers();
 
 	boolean login(long adminId, String password);

@@ -12,6 +12,7 @@ import com.capgemini.exceptions.InvalidClientIdException;
 import com.capgemini.exceptions.InvalidComplaintIdException;
 import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.exceptions.InvalidModelNumberException;
+import com.capgemini.exceptions.ProductUnavailableException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -42,6 +43,9 @@ public class ClientServiceImpl implements ClientService {
 	public void addProduct(long modelNumber, long clientId) {
 		Client client = clientRepo.findById(clientId).orElseThrow(InvalidClientIdException::new);
 		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
+		if (product.isOwned()) {
+			throw new ProductUnavailableException();
+		}
 		client.addProduct(product);
 		clientRepo.save(client);
 
