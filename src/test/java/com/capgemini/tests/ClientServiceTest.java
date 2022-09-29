@@ -49,14 +49,14 @@ public class ClientServiceTest {
 	@Test
 	@Order(2)
 	@DisplayName("Product Add Test")
-	public void clientAddProjectTest() {
+	public void clientAddProductTest() {
 		service.addProduct(3, 1);
 	}
 
 	@Test
 	@Order(3)
 	@DisplayName("Product Add Test")
-	public void clientAddProjectTest1() {
+	public void clientAddProductTest1() {
 		service.addProduct(1, 1);
 	}
 

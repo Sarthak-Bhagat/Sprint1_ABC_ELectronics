@@ -13,11 +13,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "tbl_product")
 public class Product {
 	@Id
@@ -32,5 +34,14 @@ public class Product {
 
 	@OneToMany(mappedBy = "product")
 	List<Complaint> complaint = new ArrayList<>();
+	
+	public Product(LocalDate dateofPurchase,String productCategoryName,
+			String productName,LocalDate warrantyDate) {
+		this.dateofPurchase=dateofPurchase;
+		this.productCategoryName=productCategoryName;
+		this.productName=productName;
+		this.warrantyDate=warrantyDate;
+				
+	}
 
 }
