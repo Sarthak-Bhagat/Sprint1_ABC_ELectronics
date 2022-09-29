@@ -18,10 +18,24 @@ public class EngineerServiceTest {
 	@Autowired
 	EngineerService service;
 
+	
 	@Test
 	@Order(1)
-	@DisplayName("")
-	public void addEngineerTest() {
+	@DisplayName("All Open Complaints")
+	public void getAllOpenComplaints() {
+		service.getAllOpenComplaints(1);
+	}
+	@Test
+	@Order(2)
+	@DisplayName("All Open Complaints")
+	public void getResolvedComplaints() {
+		service.getResolvedComplaints(1);
+	}
+	@Test
+	@Order(2)
+	@DisplayName("All Open Complaints")
+	public void getEngineers() {
+		service.getEngineers();
 	}
 
 }

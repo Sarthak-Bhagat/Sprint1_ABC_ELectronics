@@ -49,14 +49,14 @@ public class ClientServiceTest {
 	@Test
 	@Order(2)
 	@DisplayName("Product Add Test")
-	public void clientAddProjectTest() {
+	public void clientAddProductTest() {
 		service.addProduct(3, 1);
 	}
 
 	@Test
 	@Order(3)
 	@DisplayName("Product Add Test")
-	public void clientAddProjectTest1() {
+	public void clientAddProductTest1() {
 		service.addProduct(1, 1);
 	}
 
@@ -65,6 +65,12 @@ public class ClientServiceTest {
 	@DisplayName("Searching Client")
 	public void getClientTest() {
 		service.getClientByClientId(1);
+	}
+	@Test
+	@Order(5)
+	@DisplayName("Searching Engineer")
+	public void getEngineerByComplaintId() {
+		service.getEngineerByComplaintId(1);
 	}
 
 /*
