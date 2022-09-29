@@ -57,12 +57,5 @@ public class EngineerServiceImpl implements EngineerService {
 		return pass == password;
 	}
 
-//	@Override
-//	public List<Complaint> getResolvedComplaintsByDate(long engineerId, String date) {
-//		LocalDate.parse(date);
-//		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
-//		return complaints.stream().filter(c -> c.getStatus() == "resolved").filter(c -> c.getDate() > complaints)
-//				.collect(Collectors.toList());
-//	}
 
 }
