@@ -66,6 +66,12 @@ public class ClientServiceTest {
 	public void getClientTest() {
 		service.getClientByClientId(1);
 	}
+	@Test
+	@Order(5)
+	@DisplayName("Searching Engineer")
+	public void getEngineerByComplaintId() {
+		service.getEngineerByComplaintId(1);
+	}
 
 /*
 	@Test
