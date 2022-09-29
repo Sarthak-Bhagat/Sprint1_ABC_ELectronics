@@ -19,4 +19,6 @@ public interface ComplaintService {
 	Engineer getEngineer(long complaintId);
 
 	Product getProduct(long complaintId);
+
+	boolean login(long userId, String password);
 }
