@@ -68,24 +68,28 @@ public class ComplaintController {
 		}
 	}
 
-	@GetMapping("/client/{clinetId}/all")
-	public List<Complaint> getClientAllComplaints(@PathVariable long clientId, HttpServletRequest request) {
+	@GetMapping("/client/all")
+	public List<Complaint> getClientAllComplaints(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		return service.getClientAllComplaints(clientId);
+		HttpSession session = request.getSession();
+		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+		return service.getClientAllComplaints(currentUser.getUserId());
 	}
 
-	@GetMapping("/client/{clientId}/open")
-	public List<Complaint> getClientAllOpenComplaints(@PathVariable long clientId, HttpServletRequest request) {
+	@GetMapping("/client/open")
+	public List<Complaint> getClientAllOpenComplaints(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
-		return service.getClientAllOpenComplaints(clientId);
+		HttpSession session = request.getSession();
+		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+		return service.getClientAllOpenComplaints(currentUser.getUserId());
 
 	}
 
@@ -109,7 +113,7 @@ public class ComplaintController {
 		return service.getProduct(complaintId);
 	}
 
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
 			HttpServletRequest request) {
 
@@ -123,7 +127,7 @@ public class ComplaintController {
 		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("/signout")
+	@GetMapping("/logout")
 	public ResponseEntity<String> signout(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 

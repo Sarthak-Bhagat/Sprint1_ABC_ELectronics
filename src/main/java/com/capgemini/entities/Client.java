@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @Getter
@@ -36,7 +37,9 @@ public class Client {
 	@SequenceGenerator(name = "client_sequence")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "client_sequence")
 	private long clientId;
-	//TODO client name
+	// TODO client name
+	@JsonIgnore
+	@ToString.Exclude
 	private String password;
 	private String address;
 	private long phoneNumber;

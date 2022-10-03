@@ -36,7 +36,7 @@ public class EngineerServiceImpl implements EngineerService {
 	@Override
 	public List<Complaint> getAllOpenComplaints(long engineerId) {
 		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
-		return complaints.stream().filter(c -> c.getStatus() == "open").collect(Collectors.toList());
+		return complaints.stream().filter(c -> "open".equals(c.getStatus())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class EngineerServiceImpl implements EngineerService {
 	@Override
 	public List<Complaint> getResolvedComplaints(long engineerId) {
 		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
-		return complaints.stream().filter(c -> c.getStatus() == "resolved").collect(Collectors.toList());
+		return complaints.stream().filter(c -> "resolved".equals(c.getStatus())).collect(Collectors.toList());
 	}
 
 	@Override

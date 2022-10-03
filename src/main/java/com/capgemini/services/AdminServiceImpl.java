@@ -83,6 +83,7 @@ public class AdminServiceImpl implements AdminService {
 		Engineer engineer = engineerRepo.findById(employeeId).orElseThrow(InvalidEngineerIdException::new);
 
 		complaint.setEngineer(engineer);
+		complaintRepo.save(complaint);
 		return complaint;
 	}
 

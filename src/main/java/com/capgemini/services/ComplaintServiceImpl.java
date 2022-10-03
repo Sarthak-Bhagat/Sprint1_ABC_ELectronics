@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.entities.Client;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.entities.Product;
@@ -81,7 +82,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	@Override
 	public List<Complaint> getClientAllOpenComplaints(long clientid) {
 		List<Complaint> complaints = complaintRepo.findByClientClientId(clientid);
-		return complaints.stream().filter(c -> c.getStatus() == "open").collect(Collectors.toList());
+		return complaints.stream().filter(c -> "open".equals(c.getStatus())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -97,8 +98,8 @@ public class ComplaintServiceImpl implements ComplaintService {
 	@Override
 	public boolean login(long userId, String password) {
 
-		Engineer engineer = engineerRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
-		String pass = engineer.getPassword();
+		Client client = clientRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
+		String pass = client.getPassword();
 		return pass.equals(password);
 	}
 

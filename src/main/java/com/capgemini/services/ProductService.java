@@ -17,5 +17,5 @@ public interface ProductService {
 
 	void removeProduct(long modelNumber);
 
-	void updateProductWarranty(String warranty, long modelNumber);
+	void updateProductWarranty(long warrantyYears, long modelNumber);
 }

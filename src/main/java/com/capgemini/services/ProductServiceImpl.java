@@ -68,11 +68,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void updateProductWarranty(String warranty, long modelNumber) {
-		// Which product?
-		LocalDate warrantDate = LocalDate.parse(warranty);
+	public void updateProductWarranty(long warrantyYears, long modelNumber) {
 		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
-		product.setWarrantyDate(warrantDate);
+		long yearsToAdd = warrantyYears - product.getWarrentyYears();
+		product.setWarrentyYears(warrantyYears);
+		LocalDate warrantyDate = product.getDateofPurchase().plusYears(yearsToAdd);
+		System.out.println(product.getDateofPurchase() + " " + warrantyDate);
+		product.setWarrantyDate(warrantyDate);
 		productRepo.save(product);
 	}
 

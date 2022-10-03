@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,8 @@ public class Engineer {
 	@SequenceGenerator(name = "engineer_sequence")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "course_sequence")
 	private long employeeId;
+	@JsonIgnore
+	@ToString.Exclude
 	private String password;
 	private String engineerName;
 

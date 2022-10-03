@@ -8,7 +8,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -134,7 +136,7 @@ public class AdminController {
 		return new ResponseEntity<List<Complaint>>(service.getComplaintsByProducts(modelNumber), HttpStatus.OK);
 	}
 
-	@GetMapping("/engineer/remove/{engineerId}")
+	@DeleteMapping("/engineer/remove/{engineerId}")
 	public ResponseEntity<String> removeEngineer(@PathVariable long engineerId, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
@@ -146,21 +148,36 @@ public class AdminController {
 
 	}
 
-	@GetMapping("/complaint/{engineerId}/{complaintId}")
-	public void replaceEmployeeFromComplaint(@PathVariable long engineerId, @PathVariable long complainId,
-			HttpServletRequest request) {
+	@DeleteMapping("/product/remove/{modelNumber}")
+	public ResponseEntity<String> removeProduct(@PathVariable long modelNumber, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		pService.removeProduct(modelNumber);
+		return new ResponseEntity<String>("REMOVED PRODUCT", HttpStatus.OK);
+
+	}
+
+	@PatchMapping("/complaint/replacein/{complaintId}/by/{engineerId}")
+	public ResponseEntity<String> replaceEmployeeFromComplaint(@PathVariable long engineerId,
+			@PathVariable long complaintId, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
 			throw new InvalidCredentialsException();
 		}
 
-		service.replaceEmployeeFromComplaint(engineerId, complainId);
+		// TODO Exception
+		service.replaceEmployeeFromComplaint(engineerId, complaintId);
+		return new ResponseEntity<String>("EMPLOYEE REPLACED", HttpStatus.FORBIDDEN);
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<String> signIn(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
 
+		// TODO You're already logged in
 		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
 			HttpSession session = request.getSession(true);
@@ -168,7 +185,7 @@ public class AdminController {
 			session.setAttribute("userDetails", loginDetails);
 			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 		}
-		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.FORBIDDEN);
 	}
 
 	@GetMapping("/logout")
@@ -183,5 +200,16 @@ public class AdminController {
 		loginDetails.setAdmin(false);
 		session.setAttribute("userDetails", loginDetails);
 		return new ResponseEntity<String>("LOGGED OUT", HttpStatus.FOUND);
+	}
+
+	@PatchMapping("/updateWarranty/{modelNumber}/{warrantyYears}")
+	public ResponseEntity<String> updateProductWarranty(@PathVariable long warrantyYears,
+			@PathVariable long modelNumber, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+		if (!validLogin) {
+			return new ResponseEntity<String>("USER NOT LOGGED IN", HttpStatus.FORBIDDEN);
+		}
+		pService.updateProductWarranty(warrantyYears, modelNumber);
+		return new ResponseEntity<String>("WARRANTY UPDATED", HttpStatus.OK);
 	}
 }

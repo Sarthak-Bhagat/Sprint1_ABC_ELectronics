@@ -59,7 +59,7 @@ public class ClientController {
 		return new ResponseEntity<Client>(service.getClientByClientId(currentUser.getUserId()), HttpStatus.OK);
 	}
 
-	@GetMapping("/getengineer/{complaintid}")
+	@GetMapping("/getengineer/{complaintId}")
 	public Engineer getEngineerByComplaintId(@PathVariable long complaintId, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
@@ -79,7 +79,7 @@ public class ClientController {
 			session.setAttribute("userDetails", loginDetails);
 			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 		}
-		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.FORBIDDEN);
 	}
 
 	@GetMapping("/logout")
@@ -87,14 +87,14 @@ public class ClientController {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {
-			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.FORBIDDEN);
 		}
 
 		HttpSession session = request.getSession(true);
 		LoginDetails loginDetails = (LoginDetails) session.getAttribute("userDetails");
 		loginDetails.setAdmin(false);
 		session.setAttribute("userDetails", loginDetails);
-		return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
+		return new ResponseEntity<String>("LOGGED OUT", HttpStatus.FOUND);
 	}
 
 }

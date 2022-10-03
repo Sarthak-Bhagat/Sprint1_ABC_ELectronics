@@ -32,7 +32,7 @@ public class EngineerController {
 		try {
 			LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
 			System.out.println(currentUser);
-			if (currentUser.isAdmin()) {
+			if (currentUser.isEngineer()) {
 				return true;
 			}
 			return false;
@@ -82,18 +82,14 @@ public class EngineerController {
 	@PostMapping("/login")
 	public ResponseEntity<String> logIn(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
 
-		long username = loginDetails.getUserId();
-		String password = loginDetails.getPassword();
-
-		if (service.login(username, password)) {
+		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
 			HttpSession session = request.getSession(true);
-
-			session.setAttribute("engineer", true);
-		} else {
-			throw new InvalidCredentialsException();
+			loginDetails.setEngineer(true);
+			session.setAttribute("userDetails", loginDetails);
+			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
 		}
-		return new ResponseEntity<String>("LOGGED In", HttpStatus.FOUND);
+		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 
 	}
 

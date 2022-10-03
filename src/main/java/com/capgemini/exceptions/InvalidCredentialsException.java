@@ -9,7 +9,7 @@ public class InvalidCredentialsException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public InvalidCredentialsException() {
-		super("Invalid Login Credentials, please login again");
+		super("Invalid Login Credentials, please try again");
 	}
 
 }
