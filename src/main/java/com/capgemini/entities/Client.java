@@ -36,6 +36,7 @@ public class Client {
 	@SequenceGenerator(name = "client_sequence")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "client_sequence")
 	private long clientId;
+	//TODO client name
 	private String password;
 	private String address;
 	private long phoneNumber;

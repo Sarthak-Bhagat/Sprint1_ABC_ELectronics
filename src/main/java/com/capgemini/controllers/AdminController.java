@@ -63,7 +63,13 @@ public class AdminController {
 	}
 
 	@PostMapping("/product/add")
-	public ResponseEntity<String> addProduct(@RequestBody Product product) {
+	public ResponseEntity<String> addProduct(@RequestBody Product product, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+
 		pService.addProduct(product);
 		return new ResponseEntity<String>("ADDED PRODUCT", HttpStatus.ACCEPTED);
 	}
@@ -169,13 +175,13 @@ public class AdminController {
 	public ResponseEntity<String> signout(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 		if (!validLogin) {
-			return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("USER NOT LOGGED IN", HttpStatus.FORBIDDEN);
 		}
 
 		HttpSession session = request.getSession(true);
 		LoginDetails loginDetails = (LoginDetails) session.getAttribute("userDetails");
 		loginDetails.setAdmin(false);
 		session.setAttribute("userDetails", loginDetails);
-		return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
+		return new ResponseEntity<String>("LOGGED OUT", HttpStatus.FOUND);
 	}
 }
