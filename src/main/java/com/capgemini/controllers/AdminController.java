@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
+import com.capgemini.entities.Product;
 import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.extra.LoginDetails;
 import com.capgemini.services.AdminService;
+import com.capgemini.services.ClientServiceImpl;
+import com.capgemini.services.ProductService;
 
 @RestController
 @RequestMapping("/admin")
@@ -28,6 +31,23 @@ public class AdminController {
 
 	@Autowired
 	AdminService service;
+
+	@Autowired
+	ProductService pService;
+
+	@Autowired
+	ClientServiceImpl cService;
+
+	@PostMapping("/client/add")
+	public ResponseEntity<String> addClient(@RequestBody Client client, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		cService.addClient(client);
+		return new ResponseEntity<String>("ADDED CLIENT", HttpStatus.ACCEPTED);
+	}
 
 	@PostMapping("/engineer/add")
 	public ResponseEntity<String> addEngineer(@RequestBody Engineer engineer, HttpServletRequest request) {
@@ -42,11 +62,16 @@ public class AdminController {
 		return new ResponseEntity<String>("ADDED ENGINEER", HttpStatus.ACCEPTED);
 	}
 
+	@PostMapping("/product/add")
+	public ResponseEntity<String> addProduct(@RequestBody Product product) {
+		pService.addProduct(product);
+		return new ResponseEntity<String>("ADDED PRODUCT", HttpStatus.ACCEPTED);
+	}
+
 	private boolean checkSession(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		try {
 			LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
-			System.out.println(currentUser);
 			if (currentUser.isAdmin()) {
 				return true;
 			}
@@ -127,7 +152,7 @@ public class AdminController {
 		service.replaceEmployeeFromComplaint(engineerId, complainId);
 	}
 
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	public ResponseEntity<String> signIn(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
 
 		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
@@ -140,7 +165,7 @@ public class AdminController {
 		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("/signout")
+	@GetMapping("/logout")
 	public ResponseEntity<String> signout(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 		if (!validLogin) {

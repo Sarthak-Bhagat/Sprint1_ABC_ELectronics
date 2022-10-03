@@ -26,15 +26,11 @@ public class ClientController {
 	@Autowired
 	ClientServiceImpl service;
 
-	@PostMapping("/add")
+	@PostMapping("/register")
 	public ResponseEntity<String> addClient(@RequestBody Client client, HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
 
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
 		service.addClient(client);
-		return new ResponseEntity<String>("ADDED CLIENT", HttpStatus.ACCEPTED);
+		return new ResponseEntity<String>("Please go to /login to log in", HttpStatus.ACCEPTED);
 	}
 
 	private boolean checkSession(HttpServletRequest request) {
@@ -73,9 +69,8 @@ public class ClientController {
 		return service.getEngineerByComplaintId(complaintId);
 	}
 
-	@PostMapping("/signin")
-	public ResponseEntity<String> signInWithCredentials(@RequestBody LoginDetails loginDetails,
-			HttpServletRequest request) {
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
 
 		if (service.login(loginDetails.getUserId(), loginDetails.getPassword())) {
 
@@ -87,8 +82,8 @@ public class ClientController {
 		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("/signout")
-	public ResponseEntity<String> signout(HttpServletRequest request) {
+	@GetMapping("/logout")
+	public ResponseEntity<String> logOut(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {

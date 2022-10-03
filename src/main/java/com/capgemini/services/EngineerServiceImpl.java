@@ -40,8 +40,8 @@ public class EngineerServiceImpl implements EngineerService {
 	}
 
 	@Override
-	public List<Engineer> getEngineers() {
-		return engineerRepo.findAll();
+	public Engineer getEngineer(long engineerId) {
+		return engineerRepo.findById(engineerId).orElseThrow(InvalidCredentialsException::new);
 	}
 
 	@Override
@@ -56,6 +56,5 @@ public class EngineerServiceImpl implements EngineerService {
 		String pass = engineer.getPassword();
 		return pass.equals(password);
 	}
-
 
 }

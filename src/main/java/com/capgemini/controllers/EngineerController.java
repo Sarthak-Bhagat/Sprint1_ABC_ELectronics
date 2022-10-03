@@ -41,16 +41,6 @@ public class EngineerController {
 		}
 	}
 
-	@GetMapping("/all")
-	public List<Engineer> getAllEngineers(HttpServletRequest request) {
-		boolean validLogin = checkSession(request);
-
-		if (!validLogin) {
-			throw new InvalidCredentialsException();
-		}
-		return service.getEngineers();
-	}
-
 	@GetMapping("/open")
 	public List<Complaint> getAllOpenComplaints(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
@@ -62,6 +52,19 @@ public class EngineerController {
 		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
 
 		return service.getAllOpenComplaints(currentUser.getUserId());
+	}
+
+	@GetMapping("/get")
+	public Engineer getEngineer(HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		HttpSession session = request.getSession();
+		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+
+		return service.getEngineer(currentUser.getUserId());
 	}
 
 	@GetMapping("/resolved")
@@ -76,8 +79,8 @@ public class EngineerController {
 		return service.getResolvedComplaints(currentUser.getUserId());
 	}
 
-	@PostMapping("/signin")
-	public ResponseEntity<String> signIn(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
+	@PostMapping("/login")
+	public ResponseEntity<String> logIn(@RequestBody LoginDetails loginDetails, HttpServletRequest request) {
 
 		long username = loginDetails.getUserId();
 		String password = loginDetails.getPassword();
@@ -94,8 +97,8 @@ public class EngineerController {
 
 	}
 
-	@GetMapping("/signout")
-	public ResponseEntity<String> signout(HttpServletRequest request) {
+	@GetMapping("/logout")
+	public ResponseEntity<String> logOut(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
 		if (!validLogin) {

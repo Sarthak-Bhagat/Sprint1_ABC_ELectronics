@@ -9,11 +9,11 @@ public interface EngineerService {
 
 	List<Complaint> getAllOpenComplaints(long engineerId);
 
-	List<Engineer> getEngineers();
-
-	List<Complaint> getResolvedComplaints(long engineerId);
+	Engineer getEngineer(long engineerId);
 
 //	List<Complaint> getResolvedComplaintsByDate(long engineerId, String date);
+
+	List<Complaint> getResolvedComplaints(long engineerId);
 
 	boolean login(long userId, String password);
 
