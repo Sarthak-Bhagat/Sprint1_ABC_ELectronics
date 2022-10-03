@@ -28,9 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void addProduct(Product product) {
-		long years = java.time.temporal.ChronoUnit.YEARS.between(product.getDateofPurchase(),
-				product.getWarrantyDate());
-		product.setWarrentyYears(years);
+		product.setWarrantyDate(null);
 		productRepo.save(product);
 	}
 
@@ -52,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Complaint> getProductComplaints(long modelNumber) {
 		productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
-		
+
 		return complaintRepo.findByProductModelNumber(modelNumber);
 
 	}
@@ -64,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void removeProduct(long modelNumber) {
-		
+
 		productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
 		productRepo.deleteById(modelNumber);
 	}

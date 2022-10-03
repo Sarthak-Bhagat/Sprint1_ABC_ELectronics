@@ -1,5 +1,7 @@
 package com.capgemini.services;
 
+import java.time.LocalDate;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,11 @@ public class ClientServiceImpl implements ClientService {
 		if (product.isOwned()) {
 			throw new ProductUnvailableException();
 		}
+		LocalDate purchaseDate = LocalDate.now();
+		product.setDateofPurchase(LocalDate.now());
+		product.setWarrantyDate(purchaseDate.plusYears(product.getWarrentyYears()));
 		client.addProduct(product);
+
 		clientRepo.save(client);
 	}
 
