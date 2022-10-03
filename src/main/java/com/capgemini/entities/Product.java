@@ -38,11 +38,10 @@ public class Product {
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<Complaint> complaint = new ArrayList<>();
 
-	public Product(LocalDate dateofPurchase, String productCategoryName, String productName, LocalDate warrantyDate) {
-		this.dateofPurchase = dateofPurchase;
+	public Product( String productCategoryName, String productName, long warrantyYears) {
 		this.productCategoryName = productCategoryName;
 		this.productName = productName;
-		this.warrantyDate = warrantyDate;
+		this.warrentyYears=warrantyYears;
 	}
 
 }

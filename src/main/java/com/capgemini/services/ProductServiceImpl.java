@@ -28,7 +28,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void addProduct(Product product) {
-		product.setWarrantyDate(null);
+		LocalDate warrentyDate = LocalDate.now().plusYears(product.getWarrentyYears());
+		product.setWarrantyDate(warrentyDate);
 		productRepo.save(product);
 	}
 

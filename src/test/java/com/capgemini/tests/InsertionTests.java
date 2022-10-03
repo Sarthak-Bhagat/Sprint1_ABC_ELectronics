@@ -93,17 +93,17 @@ public class InsertionTests {
 	@Order(3)
 	@DisplayName("Adding Products")
 	public void addProductTest1() {
-		Product product1 = new Product(LocalDate.now(), "Mobiles", "Samsung", LocalDate.of(2025, 4, 2));
-		Product product2 = new Product(LocalDate.now(), "Laptops", "HP", LocalDate.of(2027, 2, 2));
-		Product product3 = new Product(LocalDate.now(), "Computers", "Dell", LocalDate.of(2029, 3, 7));
-		Product product4 = new Product(LocalDate.now(), "Printers", "Canon", LocalDate.of(2023, 11, 5));
-		Product product5 = new Product(LocalDate.now(), "Mobiles", "Vivo", LocalDate.of(2027, 6, 9));
-		Product product6 = new Product(LocalDate.now(), "Laptops", "Lenovo", LocalDate.of(2025, 4, 1));
-		Product product7 = new Product(LocalDate.now(), "Mobiles", "Redmi", LocalDate.of(2022, 12, 8));
-		Product product8 = new Product(LocalDate.now(), "Laptops", "Asus", LocalDate.of(2022, 12, 7));
-		Product product9 = new Product(LocalDate.now(), "Printers", "Epson", LocalDate.of(2023, 5, 8));
-		Product product10 = new Product(LocalDate.now(), "Mobiles", "Apple", LocalDate.of(2024, 1, 2));
-		Product product11 = new Product(LocalDate.now(), "Mobiles", "Blackberry", LocalDate.of(2000, 1, 2));
+		Product product1 = new Product("Mobiles", "Samsung",10);
+		Product product2 = new Product( "Laptops", "HP", 7);
+		Product product3 = new Product( "Computers", "Dell", 8);
+		Product product4 = new Product("Printers", "Canon", 10);
+		Product product5 = new Product("Mobiles", "Vivo", 9);
+		Product product6 = new Product("Laptops", "Lenovo",5);
+		Product product7 = new Product( "Mobiles", "Redmi", 10);
+		Product product8 = new Product("Laptops", "Asus", 9);
+		Product product9 = new Product( "Printers", "Epson", 9);
+		Product product10 = new Product("Mobiles", "Apple", 8);
+		Product product11 = new Product("Mobiles", "Blackberry", 10);
 
 		pService.addProduct(product1);
 		pService.addProduct(product2);

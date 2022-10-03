@@ -35,7 +35,7 @@ public class AdminServiceTest {
 	@Test
 	@DisplayName("Get ComplaintsByProducts")
 	public void getComplaintsByProducts() {
-		service.getComplaintsByProducts(2);
+		service.getComplaintsByProducts(4);
 	}
 
 	@Test
