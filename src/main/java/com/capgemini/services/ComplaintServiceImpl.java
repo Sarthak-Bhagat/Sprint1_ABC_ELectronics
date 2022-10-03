@@ -67,16 +67,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 	public String changeComplaintStatus(long complaintId) {
 		Complaint complaint = complaintRepo.findById(complaintId).orElseThrow(InvalidComplaintIdException::new);
 		String status = complaint.getStatus();
-		//System.out.println(status);
-		status = status.equals("open")? "resolved" : "open";
-//		if (status == "open") {
-//			status = "resolved";
-//		} else {
-//			status = "open";
-//		}
-		//System.out.println(status);
+		status = "open".equals(status) ? "resolved" : "open";
 		complaint.setStatus(status);
-
+		complaintRepo.save(complaint);
 		return "The complaint has been set to " + status;
 	}
 
@@ -103,7 +96,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
 	@Override
 	public boolean login(long userId, String password) {
-		
+
 		Engineer engineer = engineerRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
 		String pass = engineer.getPassword();
 		return pass.equals(password);

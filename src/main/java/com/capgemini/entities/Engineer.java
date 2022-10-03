@@ -3,7 +3,9 @@ package com.capgemini.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +32,7 @@ public class Engineer {
 	private String password;
 	private String engineerName;
 
-	@OneToMany(mappedBy = "engineer")
+	@OneToMany(mappedBy = "engineer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<Complaint> complaint = new ArrayList<>();
 
 	public Engineer(String engName, String password) {

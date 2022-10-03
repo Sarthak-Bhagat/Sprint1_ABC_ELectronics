@@ -48,7 +48,6 @@ public class ClientServiceImpl implements ClientService {
 		}
 		client.addProduct(product);
 		clientRepo.save(client);
-
 	}
 
 	@Override
@@ -67,17 +66,4 @@ public class ClientServiceImpl implements ClientService {
 		String pass = client.getPassword();
 		return pass.equals(password);
 	}
-
-	@Override
-	public Client signIn(Client client) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Client signOut(Client client) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

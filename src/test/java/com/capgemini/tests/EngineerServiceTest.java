@@ -2,7 +2,6 @@ package com.capgemini.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +17,22 @@ public class EngineerServiceTest {
 	@Autowired
 	EngineerService service;
 
-	
 	@Test
-	@Order(1)
 	@DisplayName("All Open Complaints")
 	public void getAllOpenComplaints() {
 		service.getAllOpenComplaints(1);
 	}
+
 	@Test
-	@Order(2)
-	@DisplayName("All Open Complaints")
-	public void getResolvedComplaints() {
-		service.getResolvedComplaints(1);
-	}
-	@Test
-	@Order(2)
-	@DisplayName("All Open Complaints")
+	@DisplayName("All Complaints")
 	public void getEngineers() {
 		service.getEngineers();
+	}
+
+	@Test
+	@DisplayName("All Resolved Complaints")
+	public void getResolvedComplaints() {
+		service.getResolvedComplaints(1);
 	}
 
 }

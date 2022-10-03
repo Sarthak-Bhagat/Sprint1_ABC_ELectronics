@@ -16,8 +16,4 @@ public interface ClientService {
 	Engineer getEngineerByComplaintId(long complaintId);
 
 	boolean login(long clientId, String password);
-
-	Client signIn(Client client);
-
-	Client signOut(Client client);
 }
