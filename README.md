@@ -61,12 +61,15 @@ b) Client Information
 
 ##Class Design - Entities
 ![Entities UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Entities.png)
+
 ##Class Design - Exceptions
-![Exceptions UML] (https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Exceptions.png)
+![Exceptions UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Exceptions.png)
+
 ##Class Design - Repositories
-![Repositories UML] (https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Repos.png)
+![Repositories UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Repos.png)
+
 ##Class Design - Services
-![Services UML] (https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services.png)
+![Services UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services.png)
 ![services UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services2.png)
 
 ## Conclusion
