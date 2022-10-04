@@ -59,16 +59,16 @@ b) Client Information
 * Login("/login")
 * Logout("/signout")
 
-##Class Design - Entities
+## Class Design - Entities
 ![Entities UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Entities.png)
 
-##Class Design - Exceptions
+## Class Design - Exceptions
 ![Exceptions UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Exceptions.png)
 
-##Class Design - Repositories
+## Class Design - Repositories
 ![Repositories UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Repos.png)
 
-##Class Design - Services
+## Class Design - Services
 ![Services UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services.png)
 ![services UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services2.png)
 
