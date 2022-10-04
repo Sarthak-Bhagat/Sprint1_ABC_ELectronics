@@ -35,6 +35,7 @@ public class Engineer {
 	@ToString.Exclude
 	private String password;
 	private String engineerName;
+	private boolean active;
 
 	@OneToMany(mappedBy = "engineer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<Complaint> complaint = new ArrayList<>();
@@ -42,6 +43,7 @@ public class Engineer {
 	public Engineer(String engName, String password) {
 		this.engineerName = engName;
 		this.password = password;
+		this.active = true;
 	}
 
 }

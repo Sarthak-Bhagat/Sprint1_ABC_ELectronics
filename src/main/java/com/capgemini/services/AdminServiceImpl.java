@@ -86,7 +86,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void removeEngineer(long employeeid) {
 		Engineer engineer = engineerRepo.findById(employeeid).orElseThrow(InvalidEngineerIdException::new);
-		engineerRepo.delete(engineer);
+		engineer.setActive(false);
+		engineerRepo.save(engineer);
 	}
 
 	@Override

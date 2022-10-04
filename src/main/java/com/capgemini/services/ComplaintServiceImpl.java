@@ -46,7 +46,15 @@ public class ComplaintServiceImpl implements ComplaintService {
 		List<Engineer> engineers = engineerRepo.findAll();
 		System.out.println(engineers);
 		Random rand = new Random();
-		Engineer randomEngineer = engineers.get(rand.nextInt(engineers.size()));
+//		Engineer randomEngineer = engineers.get(rand.nextInt(engineers.size()));
+//		while (!randomEngineer.isActive()) {
+//			randomEngineer = engineers.get(rand.nextInt(engineers.size()));
+//
+//		}
+
+		List<Engineer> activeEngineers = engineers.stream().filter(Engineer::isActive).collect(Collectors.toList());
+
+		Engineer randomEngineer = activeEngineers.get(rand.nextInt(activeEngineers.size()));
 		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
 
 		if (product.getWarrantyDate().compareTo(LocalDate.now()) <= 0) {

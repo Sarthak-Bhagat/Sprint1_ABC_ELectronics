@@ -46,7 +46,6 @@ public class ProductServiceTest {
 		Assertions.assertThrows(InvalidModelNumberException.class, () -> {
 			service.getEngineers(100000);
 		});
-
 	}
 
 	@Test
