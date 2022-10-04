@@ -2,12 +2,13 @@ package com.capgemini.services;
 
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Engineer;
+import com.capgemini.entities.Product;
 
 public interface ClientService {
 
 	void addClient(Client client);
 
-	void addProduct(long modelNumber, long clientId);
+	Product addProduct(long modelNumber, long clientId);
 
 //	void changeStatusOfComplaint(int complaintId);
 

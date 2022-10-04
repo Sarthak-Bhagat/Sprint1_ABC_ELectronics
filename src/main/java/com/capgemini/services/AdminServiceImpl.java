@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.entities.Admin;
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
@@ -12,6 +13,7 @@ import com.capgemini.exceptions.InvalidComplaintIdException;
 import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.exceptions.InvalidEngineerIdException;
 import com.capgemini.exceptions.InvalidModelNumberException;
+import com.capgemini.repositories.AdminRepo;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -31,6 +33,14 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	ClientRepo clientRepo;
+
+	@Autowired
+	AdminRepo adminRepo;
+
+	@Override
+	public void addAdmin(Admin admin) {
+		adminRepo.save(admin);
+	}
 
 	@Override
 	public void addEngineer(Engineer engineer) {
@@ -65,9 +75,12 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public boolean login(long adminId, String password) {
-		Engineer engineer = engineerRepo.findById(adminId).orElseThrow(InvalidCredentialsException::new);
-		String pass = engineer.getPassword();
-		return pass.equals(password);
+		Admin admin = adminRepo.findById(adminId).orElseThrow(InvalidCredentialsException::new);
+		String pass = admin.getPassword();
+		if (!pass.equals(password)) {
+			throw new InvalidCredentialsException();
+		}
+		return true;
 	}
 
 	@Override

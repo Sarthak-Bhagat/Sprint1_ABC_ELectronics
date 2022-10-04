@@ -42,7 +42,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	@Transactional
-	public void addProduct(long modelNumber, long clientId) {
+	public Product addProduct(long modelNumber, long clientId) {
 		Client client = clientRepo.findById(clientId).orElseThrow(InvalidClientIdException::new);
 		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
 		if (product.isOwned()) {
@@ -50,10 +50,12 @@ public class ClientServiceImpl implements ClientService {
 		}
 		LocalDate purchaseDate = LocalDate.now();
 		product.setDateofPurchase(LocalDate.now());
-		product.setWarrantyDate(purchaseDate.plusYears(product.getWarrentyYears()));
+		product.setOwned(true);
+		product.setWarrantyDate(purchaseDate.plusYears(product.getWarrantyYears()));
 		client.addProduct(product);
 
 		clientRepo.save(client);
+		return product;
 	}
 
 	@Override
@@ -70,6 +72,9 @@ public class ClientServiceImpl implements ClientService {
 	public boolean login(long clientId, String password) {
 		Client client = clientRepo.findById(clientId).orElseThrow(InvalidCredentialsException::new);
 		String pass = client.getPassword();
-		return pass.equals(password);
+		if (!pass.equals(password)) {
+			throw new InvalidCredentialsException();
+		}
+		return true;
 	}
 }

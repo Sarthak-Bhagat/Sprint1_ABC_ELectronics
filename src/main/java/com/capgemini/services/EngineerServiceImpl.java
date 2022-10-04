@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
 import com.capgemini.exceptions.InvalidCredentialsException;
+import com.capgemini.exceptions.InvalidEngineerIdException;
 import com.capgemini.repositories.ClientRepo;
 import com.capgemini.repositories.ComplaintRepo;
 import com.capgemini.repositories.EngineerRepo;
@@ -35,26 +36,31 @@ public class EngineerServiceImpl implements EngineerService {
 
 	@Override
 	public List<Complaint> getAllOpenComplaints(long engineerId) {
+		engineerRepo.findById(engineerId).orElseThrow(InvalidEngineerIdException::new);
 		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
 		return complaints.stream().filter(c -> "open".equals(c.getStatus())).collect(Collectors.toList());
 	}
 
 	@Override
 	public Engineer getEngineer(long engineerId) {
-		return engineerRepo.findById(engineerId).orElseThrow(InvalidCredentialsException::new);
+		return engineerRepo.findById(engineerId).orElseThrow(InvalidEngineerIdException::new);
 	}
 
 	@Override
 	public List<Complaint> getResolvedComplaints(long engineerId) {
+		engineerRepo.findById(engineerId).orElseThrow(InvalidEngineerIdException::new);
 		List<Complaint> complaints = complaintRepo.findByEngineerEmployeeId(engineerId);
 		return complaints.stream().filter(c -> "resolved".equals(c.getStatus())).collect(Collectors.toList());
 	}
 
 	@Override
-	public boolean login(long userId, String password) {
-		Engineer engineer = engineerRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
+	public boolean login(long clientId, String password) {
+		Engineer engineer = engineerRepo.findById(clientId).orElseThrow(InvalidCredentialsException::new);
 		String pass = engineer.getPassword();
-		return pass.equals(password);
+		if (!pass.equals(password)) {
+			throw new InvalidCredentialsException();
+		}
+		return true;
 	}
 
 }

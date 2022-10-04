@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.exceptions.InvalidEngineerIdException;
 import com.capgemini.services.AdminService;
 
@@ -19,6 +20,12 @@ public class AdminServiceTest {
 
 	@Autowired
 	AdminService service;
+
+	@Test
+	@DisplayName("Admin Login")
+	public void adminLoginTest() {
+		service.login(1, "Admin Pass");
+	}
 
 	@Test
 	@DisplayName("Get Clients")
@@ -35,7 +42,15 @@ public class AdminServiceTest {
 	@Test
 	@DisplayName("Get ComplaintsByProducts")
 	public void getComplaintsByProducts() {
-		service.getComplaintsByProducts(4);
+		service.getComplaintsByProducts(3);
+	}
+
+	@Test
+	@DisplayName("Invalid Admin Login")
+	public void invalidAdminLoginTest() {
+		assertThrows(InvalidCredentialsException.class, () -> {
+			service.login(1, "Wrong Pass");
+		});
 	}
 
 	@Test

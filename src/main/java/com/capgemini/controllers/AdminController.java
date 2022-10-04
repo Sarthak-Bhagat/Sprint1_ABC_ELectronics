@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.capgemini.entities.Admin;
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Complaint;
 import com.capgemini.entities.Engineer;
@@ -40,6 +41,17 @@ public class AdminController {
 	@Autowired
 	ClientServiceImpl cService;
 
+	@PostMapping("/add")
+	public ResponseEntity<String> addAdmin(@RequestBody Admin admin, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		service.addAdmin(admin);
+		return new ResponseEntity<String>("ADDED ADMIN", HttpStatus.OK);
+	}
+
 	@PostMapping("/client/add")
 	public ResponseEntity<String> addClient(@RequestBody Client client, HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
@@ -48,7 +60,7 @@ public class AdminController {
 			throw new InvalidCredentialsException();
 		}
 		cService.addClient(client);
-		return new ResponseEntity<String>("ADDED CLIENT", HttpStatus.ACCEPTED);
+		return new ResponseEntity<String>("ADDED CLIENT", HttpStatus.OK);
 	}
 
 	@PostMapping("/engineer/add")
@@ -61,7 +73,7 @@ public class AdminController {
 		}
 
 		service.addEngineer(engineer);
-		return new ResponseEntity<String>("ADDED ENGINEER", HttpStatus.ACCEPTED);
+		return new ResponseEntity<String>("ADDED ENGINEER", HttpStatus.OK);
 	}
 
 	@PostMapping("/product/add")
@@ -73,7 +85,7 @@ public class AdminController {
 		}
 
 		pService.addProduct(product);
-		return new ResponseEntity<String>("ADDED PRODUCT", HttpStatus.ACCEPTED);
+		return new ResponseEntity<String>("ADDED PRODUCT", HttpStatus.OK);
 	}
 
 	private boolean checkSession(HttpServletRequest request) {
@@ -183,7 +195,7 @@ public class AdminController {
 			HttpSession session = request.getSession(true);
 			loginDetails.setAdmin(true);
 			session.setAttribute("userDetails", loginDetails);
-			return new ResponseEntity<String>("LOGGED IN", HttpStatus.FOUND);
+			return new ResponseEntity<String>("LOGGED IN", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("USER NOT FOUND", HttpStatus.FORBIDDEN);
 	}

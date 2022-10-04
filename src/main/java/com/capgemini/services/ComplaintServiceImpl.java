@@ -96,11 +96,13 @@ public class ComplaintServiceImpl implements ComplaintService {
 	}
 
 	@Override
-	public boolean login(long userId, String password) {
-
-		Client client = clientRepo.findById(userId).orElseThrow(InvalidCredentialsException::new);
+	public boolean login(long clientId, String password) {
+		Client client = clientRepo.findById(clientId).orElseThrow(InvalidCredentialsException::new);
 		String pass = client.getPassword();
-		return pass.equals(password);
+		if (!pass.equals(password)) {
+			throw new InvalidCredentialsException();
+		}
+		return true;
 	}
 
 }

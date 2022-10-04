@@ -1,5 +1,7 @@
 package com.capgemini.tests;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.exceptions.OutOfWarrantyException;
 import com.capgemini.services.ComplaintService;
 
@@ -19,6 +22,12 @@ public class ComplaintServiceTest {
 
 	@Autowired
 	ComplaintService service;
+
+	@Test
+	@DisplayName("Client Login")
+	public void adminLoginTest() {
+		service.login(1, "C1pass");
+	}
 
 	@Test
 	@Order(1)
@@ -45,6 +54,12 @@ public class ComplaintServiceTest {
 		// Check status Resolved in DB
 		Assertions.assertEquals("The complaint has been set to resolved", service.changeComplaintStatus(2));
 
+	}
+
+	@Test
+	@DisplayName("Client Login")
+	public void clientLoginTest() {
+		service.login(1, "C1pass");
 	}
 
 	@Test
@@ -78,11 +93,18 @@ public class ComplaintServiceTest {
 	}
 
 	@Test
+	@DisplayName("Invalid Client Login")
+	public void invalidClientLoginTest() {
+		assertThrows(InvalidCredentialsException.class, () -> {
+			service.login(1, "Wrong Pass");
+		});
+	}
+
+	@Test
 	@DisplayName("Check if out of warranty error is thrown")
 	public void warrantyTest() {
-		// Check status Resolved in DB
 		Assertions.assertThrows(OutOfWarrantyException.class, () -> {
-			service.bookComplaint(7, 11, "Too old");
+			service.bookComplaint(7, 12, "Too old");
 		});
 
 	}

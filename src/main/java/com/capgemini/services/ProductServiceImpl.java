@@ -28,14 +28,14 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void addProduct(Product product) {
-		LocalDate warrentyDate = LocalDate.now().plusYears(product.getWarrentyYears());
-		product.setWarrantyDate(warrentyDate);
+		product.setWarrantyDate(LocalDate.now().plusYears(product.getWarrantyYears()));
 		productRepo.save(product);
 	}
 
 	@Override
 	public List<Engineer> getEngineers(long modelNumber) {
-		// Get complaint from modelNumber, then get the engineerid from those complaints
+		productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
+
 		List<Complaint> complaints = complaintRepo.findByProductModelNumber(modelNumber);
 		List<Engineer> engineers = new ArrayList<Engineer>();
 
@@ -71,8 +71,8 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void updateProductWarranty(long warrantyYears, long modelNumber) {
 		Product product = productRepo.findById(modelNumber).orElseThrow(InvalidModelNumberException::new);
-		long yearsToAdd = warrantyYears - product.getWarrentyYears();
-		product.setWarrentyYears(warrantyYears);
+		long yearsToAdd = warrantyYears - product.getWarrantyYears();
+		product.setWarrantyYears(warrantyYears);
 		LocalDate warrantyDate = product.getDateofPurchase().plusYears(yearsToAdd);
 		System.out.println(product.getDateofPurchase() + " " + warrantyDate);
 		product.setWarrantyDate(warrantyDate);

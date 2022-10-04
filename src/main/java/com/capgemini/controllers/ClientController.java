@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.entities.Client;
 import com.capgemini.entities.Engineer;
+import com.capgemini.entities.Product;
 import com.capgemini.exceptions.InvalidCredentialsException;
 import com.capgemini.extra.LoginDetails;
 import com.capgemini.services.ClientServiceImpl;
@@ -31,6 +33,19 @@ public class ClientController {
 
 		service.addClient(client);
 		return new ResponseEntity<String>("Please go to /login to log in", HttpStatus.ACCEPTED);
+	}
+
+	@PutMapping("/buyproduct/{modelNumber}")
+	public ResponseEntity<Product> buyProduct(@PathVariable long modelNumber, HttpServletRequest request) {
+		boolean validLogin = checkSession(request);
+
+		if (!validLogin) {
+			throw new InvalidCredentialsException();
+		}
+		HttpSession session = request.getSession();
+		LoginDetails currentUser = (LoginDetails) session.getAttribute("userDetails");
+
+		return new ResponseEntity<Product>(service.addProduct(modelNumber, currentUser.getUserId()), HttpStatus.OK);
 	}
 
 	private boolean checkSession(HttpServletRequest request) {

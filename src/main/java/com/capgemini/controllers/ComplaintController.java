@@ -68,7 +68,7 @@ public class ComplaintController {
 		}
 	}
 
-	@GetMapping("/client/all")
+	@GetMapping("/get/all")
 	public List<Complaint> getClientAllComplaints(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 
@@ -80,7 +80,7 @@ public class ComplaintController {
 		return service.getClientAllComplaints(currentUser.getUserId());
 	}
 
-	@GetMapping("/client/open")
+	@GetMapping("/get/open")
 	public List<Complaint> getClientAllOpenComplaints(HttpServletRequest request) {
 		boolean validLogin = checkSession(request);
 

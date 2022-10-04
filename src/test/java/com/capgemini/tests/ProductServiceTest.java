@@ -20,10 +20,8 @@ public class ProductServiceTest {
 	ProductService service;
 
 	@Test
-	@DisplayName("get engineers")
+	@DisplayName("get assigned engineers")
 	public void getEngineersTest() {
-
-		// only complain query executed
 		service.getEngineers(1);
 
 	}
@@ -31,7 +29,6 @@ public class ProductServiceTest {
 	@Test
 	@DisplayName("get Product complaints")
 	public void getProductComplaintsTest() {
-
 		service.getProductComplaints(1);
 
 	}
@@ -39,14 +36,30 @@ public class ProductServiceTest {
 	@Test
 	@DisplayName("get all Product")
 	public void getProductsTest() {
-
 		service.getProducts();
 
 	}
 
 	@Test
+	@DisplayName("Invalid get assigned engineers")
+	public void InvalidGetEngineersTest() {
+		Assertions.assertThrows(InvalidModelNumberException.class, () -> {
+			service.getEngineers(100000);
+		});
+
+	}
+
+	@Test
+	@DisplayName("Invalid get Product complaints")
+	public void InvalidGetProductComplaintsTest() {
+		Assertions.assertThrows(InvalidModelNumberException.class, () -> {
+			service.getProductComplaints(100000);
+		});
+	}
+
+	@Test
 	@DisplayName("Invalid Test Invalid model number while remove product")
-	public void invalidTest() {
+	public void invalidRemoveTest() {
 
 		Assertions.assertThrows(InvalidModelNumberException.class, () -> {
 			service.removeProduct(100000);
@@ -58,7 +71,6 @@ public class ProductServiceTest {
 	@DisplayName("Remove Product")
 	public void removeProductTest() {
 		service.removeProduct(2);
-
 	}
 
 }
