@@ -23,7 +23,7 @@
    * Download and execute the provided installation script
      
      ```
-     curl -s https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_kubernetes | bash
+     curl -s https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_kubectl | bash
      ```
 
 ## CREATING DOCKER CONTAINER FROM SPRINT 1 PROJECT
