@@ -7,7 +7,7 @@
    * Download and execute the provided installation script
      
      ```
-     curl -s https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_docker_ubuntu | bash
+     wget https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_docker_ubuntu
      ```
 
 2. DOCKER COMPOSE
@@ -15,7 +15,7 @@
    * Download and execute the provided installation script
      
      ```
-     curl -s https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_dockercompose | bash
+     wget https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_dockercompose
      ```
      
 3. KUBERNETES
@@ -23,7 +23,7 @@
    * Download and execute the provided installation script
      
      ```
-     curl -s https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_kubectl | bash
+     wget https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_kubectl
      ```
 
 ## CREATING DOCKER CONTAINER FROM SPRINT 1 PROJECT
