@@ -78,3 +78,12 @@
 
 7. Launch with docker compose
    `docker-compose up -d`
+
+
+## DEPLOY PROJECT ON KUBERNETES
+
+1. Switch to the branch `sprint2-scripts`
+   `git checkout sprint2-scrpits`
+   
+2. Apply all deployments and serv    with kubectl
+   `kubectl apply -f .`
