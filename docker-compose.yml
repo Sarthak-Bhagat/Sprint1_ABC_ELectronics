@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-    sprint1:        
+    sprint1:
         image: sarthakbhagat/sprint1:v2
         ports:
             - 8080:8080
@@ -12,13 +12,12 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/sprint2
             - SPRING_DATASOURCE_USERNAME=postgres
             - SPRING_DATASOURCE_PASSWORD=password
-     
 
-    postgres:        
+    postgres:
         image: postgres:14.5
         ports:
-        - 5432:5432
-       
+            - 5432:5432
+
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: password
