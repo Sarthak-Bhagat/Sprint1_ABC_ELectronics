@@ -8,6 +8,8 @@
 
      ```
      wget https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_docker_ubuntu
+     chmod +x install_docker_ubuntu
+     ./install_docker_ubuntu
      ```
 
 2. DOCKER COMPOSE
@@ -16,6 +18,8 @@
 
      ```
      wget https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_dockercompose
+     chmod +x install_dockercompose
+     ./install_dockercompose
      ```
 
 3. KUBERNETES
@@ -24,6 +28,8 @@
 
      ```
      wget https://raw.githubusercontent.com/gcpexamples/gcpdemos/master/installation_scripts/install_kubectl
+     chmod +x install_kubectl
+     ./install_kubectl
      ```
 
 ## CREATING DOCKER CONTAINER FROM SPRINT 1 PROJECT
@@ -32,6 +38,7 @@
 
    ```
    git clone https://github.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics.git
+   cd Sprint1_ABC_ELectronics
    ```
 
 2. Switch to the sprint 2 branch
@@ -79,26 +86,24 @@
 
 7. Create Docker Compose
 
-   ```docker
-        version: '3.8'
+   ```yml
+   version: "3.8"
 
-        services:
+   services:
+     customer:
+       image: sarthakbhagat/sprint1:v2
+       ports:
+         - 8080:8080
 
-            customer:
-                image: sarthakbhagat/sprint1:v2
-                ports:
-                    - 8080:8080
+     postgres:
+       image: postgres:14.5
+       ports:
+         - 5432:5432
 
-
-            postgres:
-                image: postgres:14.5
-                ports:
-                    - 5432:5432
-
-                environment:
-                    POSTGRES_USER: postgres
-                    POSTGRES_PASSWORD: password
-                    POSTGRES_DB: sprint1
+       environment:
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: password
+         POSTGRES_DB: sprint1
    ```
 
 8. Launch with docker compose
@@ -107,19 +112,28 @@
    docker-compose up -d
    ```
 
+9. Check all running containers
+
+   ```
+   docker ps
+   ```
+
+10. Connect to the database running in the container
+
+    ```
+    docker exec -i postgres psql -U postgres
+    ```
+
 ## DEPLOY PROJECT ON KUBERNETES
 
 1. Switch to the branch sprint2-scripts
+
    ```
    git checkout sprint2-scrpits
    ```
-2. Apply all deployments and serv with kubectl
+
+2. Apply all deployments and services in the folder with kubectl
 
    ```
    kubectl apply -f .
-   ```
-
-3. Start port forwarding to public ip
-   ```
-   kubectl port-forward --address 0.0.0.0 service/sprint2 8080:8080
    ```
