@@ -60,17 +60,17 @@ b) Client Information
 * Logout("/signout")
 
 ## Class Design - Entities
-![Entities UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Entities.png)
+![Entities UML](.screenshots/Entities.png)
 
 ## Class Design - Exceptions
-![Exceptions UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Exceptions.png)
+![Exceptions UML](.screenshots/Exceptions.png)
 
 ## Class Design - Repositories
-![Repositories UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Repos.png)
+![Repositories UML](.screenshots/Repos.png)
 
 ## Class Design - Services
-![Services UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services.png)
-![services UML](https://raw.githubusercontent.com/Sarthak-Bhagat/Sprint1_ABC_ELectronics/main/.screenshots/Services2.png)
+![Services UML](.screenshots/Services.png)
+![services UML](.screenshots/Services2.png)
 
 ## Conclusion
 * Our aim of the project was to present a smart solution for managing complaints service for ABC Electronics.
