@@ -1,6 +1,6 @@
-apiVersion: apps/v1 #version of the Kubernetes API you're using to create this object
-kind: Deployment #What kind of object you want to create
-metadata: #deployment name, helps uniquely identify the object
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: sprint2
 
 spec:
@@ -8,17 +8,17 @@ spec:
     matchLabels:
       app: sprint2
 
-  replicas: 1 # tells deployment to run 1 pods matching the template
+  replicas: 1
   template:
     metadata:
       labels:
         app: sprint2
-    spec: #What state you desire for the object
+    spec:
       containers:
-        - name: sprint1 #container name
-          image: "sarthakbhagat/sprint1:v2"
+        - name: sprint2
+          image: "sarthakbhagat/abc_electronics:sprint2"
           ports:
-            - containerPort: 8080 # demo runs on port 8080
+            - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres:5432/sprint2

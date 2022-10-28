@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
 
-    sprint1:
-        image: sarthakbhagat/sprint1:v2
+    abc_electronics:
+        image: sarthakbhagat/abc_electronics:sprint2
         ports:
             - 8080:8080
         depends_on:
