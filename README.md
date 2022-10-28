@@ -64,7 +64,7 @@
 5. Build the docker image
 
    ```
-   docker build -t sprint1:v1 .
+   docker build -t [IMAGE_NAME]:[TAG] .
    ```
 
 6. Push the docker image to dockerhub
@@ -77,11 +77,11 @@
 
    - Tag docker image
      ```
-     docker tag sprint1:v1 sarthakbhagat/sprint1:v1
+     docker tag sprint1:v1 [DOCKERHUB_USERNAME]/[IMAGE_NAME]:[TAG]
      ```
    - Push docker image
      ```
-     docker push sarthakbhagat/sprint1
+     docker push [DOCKERHUB_USERNAME]/[IMAGE_NAME]:[TAG]
      ```
 
 7. Create Docker Compose
@@ -91,7 +91,7 @@
 
    services:
      customer:
-       image: sarthakbhagat/sprint1:v2
+       image: [DOCKERHUB_USERNAME]/[IMAGE_NAME]:[TAG]
        ports:
          - 8080:8080
 
@@ -129,7 +129,7 @@
 1. Switch to the branch sprint2-scripts
 
    ```
-   git checkout sprint2-scrpits
+   git checkout sprint2-scripts
    ```
 
 2. Apply all deployments and services in the folder with kubectl
