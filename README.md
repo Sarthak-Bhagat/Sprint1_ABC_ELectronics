@@ -77,10 +77,11 @@ b) Client Information
 * The technologies used - Java 8, Spring Boot, Maven, PostgreSQL, to achieve our goal.
 * We generated the design structure as per the class design provided and proceeded with the TDD approach. 
 * We used Github for collaborative development of the project.
-* Every team member got an experience to work and coordinate as a team. 
+* Every team member got an experience to work and coordinate as a team.
 
- 
+## Terms
 
+Mine, and free to use — MIT licensed, so do what you like with it.
 
-
-
+Support and updates depend entirely on my mood. Issues and pull requests may get a
+look, or may not. Nothing here is maintained, supported, or promised.
